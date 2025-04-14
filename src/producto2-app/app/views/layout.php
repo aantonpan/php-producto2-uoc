@@ -13,36 +13,45 @@
     <!-- Navbar Bootstrap -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="?r=home/index">TransfersApp</a>
+            <?php
+            $dashboardLink = '?r=home/index';
+            $isLoggedIn = isset($_SESSION['usuario']);
+            $isAdmin = $isLoggedIn && $_SESSION['usuario']['tipo'] === 'admin';
+            $isParticular = $isLoggedIn && $_SESSION['usuario']['tipo'] === 'particular';
+
+            if ($isParticular) {
+                $dashboardLink = '?r=dashboardcliente/index';
+            } elseif ($isAdmin) {
+                $dashboardLink = '?r=dashboardadmin/index';
+            }
+            ?>
+            <a class="navbar-brand" href="<?= $dashboardLink ?>">TransfersApp</a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+            <?php if ($isLoggedIn): ?>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
 
-                    <?php if (isset($_SESSION['usuario'])): ?>
-                        <!-- Usuario logueado -->
-                        <li class="nav-item"><a class="nav-link" href="?r=evento/index">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="?r=reserva/index">Reservas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="?r=perfil/index">Mi Perfil</a></li>
+                        <?php if ($isParticular): ?>
+                            <li class="nav-item"><a class="nav-link" href="?r=reserva/index">Mis Reservas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="?r=perfil/index">Mi Perfil</a></li>
+                        <?php endif; ?>
 
-                        <!-- Solo admins podrían ver estas (añade validación más adelante) -->
-                        <li class="nav-item"><a class="nav-link" href="?r=zona/index">Zonas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="?r=hotel/index">Hoteles</a></li>
-                        <li class="nav-item"><a class="nav-link" href="?r=vehiculo/index">Vehículos</a></li>
+                        <?php if ($isAdmin): ?>
+                            <li class="nav-item"><a class="nav-link" href="?r=reserva/index">Reservas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="?r=perfil/index">Mi Perfil</a></li>
+                            <li class="nav-item"><a class="nav-link" href="?r=zona/index">Zonas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="?r=hotel/index">Hoteles</a></li>
+                            <li class="nav-item"><a class="nav-link" href="?r=vehiculo/index">Vehículos</a></li>
+                        <?php endif; ?>
 
-                        <!-- Logout -->
                         <li class="nav-item"><a class="nav-link text-danger" href="?r=auth/logout">Cerrar Sesión</a></li>
-
-                    <?php else: ?>
-                        <!-- Usuario NO logueado -->
-                        <li class="nav-item"><a class="nav-link" href="?r=auth/login&type=particular">Iniciar Sesión</a></li>
-                        <li class="nav-item"><a class="nav-link" href="?r=auth/register&type=particular">Registrarse</a></li>
-                    <?php endif; ?>
-
-                </ul>
-            </div>
+                    </ul>
+                </div>
+            <?php endif; ?>
         </div>
     </nav>
 
