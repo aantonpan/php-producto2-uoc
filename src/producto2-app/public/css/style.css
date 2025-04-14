@@ -13,3 +13,10 @@ th, td {
     padding: 0.5rem;
     border: 1px solid #ccc;
 }
+
+
+#calendar {
+     min-height: 600px;
+    padding: 10px;
+}
+

@@ -9,8 +9,28 @@
             <div id="calendar"></div>
         </div>
     </div>
-
     <div class="mt-3 text-end">
         <a href="?r=reserva/index" class="btn btn-outline-primary">Ver todas mis reservas</a>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+    if (!calendarEl) return;
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'es',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,listWeek'
+        },
+        events: <?= json_encode($GLOBALS['eventos']) ?>
+    });
+
+    calendar.render();
+});
+</script>
+
