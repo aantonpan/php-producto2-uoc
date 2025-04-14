@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <div class="container py-5">
     <h1 class="text-center mb-5">Bienvenido a TransfersApp</h1>
 
@@ -41,3 +42,4 @@
 
     </div>
 </div>
+<?php ob_end_flush(); ?>

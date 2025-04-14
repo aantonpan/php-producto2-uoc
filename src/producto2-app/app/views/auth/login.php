@@ -1,5 +1,4 @@
 <?php
-// Detectar tipo desde la URL
 $type = $_GET['type'] ?? 'particular';
 $rol = ($type === 'admin') ? 'Administrador' : 'Usuario Particular';
 $bg = ($type === 'admin') ? 'bg-dark' : 'bg-primary';
@@ -8,7 +7,6 @@ $bg = ($type === 'admin') ? 'bg-dark' : 'bg-primary';
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-
             <div class="card text-white <?= $bg ?>">
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Login - <?= $rol ?></h2>
@@ -32,15 +30,12 @@ $bg = ($type === 'admin') ? 'bg-dark' : 'bg-primary';
                     </form>
 
                     <?php if ($type === 'particular'): ?>
-                        <div class="mt-4 text-center">
-                            <small class="text-white">¿No tienes cuenta?</small>
-                            <a href="?r=auth/register" class="text-white fw-bold">Regístrate</a>
+                        <div class="mt-3 text-center">
+                            ¿No tienes cuenta? <a class="text-white" href="?r=auth/register&type=particular">Regístrate</a>
                         </div>
                     <?php endif; ?>
-
                 </div>
             </div>
-
         </div>
     </div>
 </div>

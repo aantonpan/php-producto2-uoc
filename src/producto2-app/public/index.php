@@ -1,5 +1,6 @@
 <?php
-ob_start(); // 🔄 ¡Nuevo! evita warning de headers
+session_start();       // Necesario para login y control de acceso
+ob_start();            // Evita problemas con headers
 
 require_once __DIR__ . '/../app/core/db.php';
 require_once __DIR__ . '/../app/core/router.php';

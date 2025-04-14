@@ -17,35 +17,38 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
 
-                    <!-- Navegación principal -->
-                    <li class="nav-item"><a class="nav-link" href="?r=evento/index">Eventos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?r=reserva/index">Reservas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?r=perfil/index">Mi Perfil</a></li>
+                    <?php if (isset($_SESSION['usuario'])): ?>
+                        <!-- Usuario logueado -->
+                        <li class="nav-item"><a class="nav-link" href="?r=evento/index">Eventos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="?r=reserva/index">Reservas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="?r=perfil/index">Mi Perfil</a></li>
 
-                    <!-- Entidades extra -->
-                    <li class="nav-item"><a class="nav-link" href="?r=zona/index">Zonas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?r=hotel/index">Hoteles</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?r=vehiculo/index">Vehículos</a></li>
+                        <!-- Solo admins podrían ver estas (añade validación más adelante) -->
+                        <li class="nav-item"><a class="nav-link" href="?r=zona/index">Zonas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="?r=hotel/index">Hoteles</a></li>
+                        <li class="nav-item"><a class="nav-link" href="?r=vehiculo/index">Vehículos</a></li>
 
-                    <!-- Autenticación -->
-                    <li class="nav-item"><a class="nav-link" href="?r=auth/login">Iniciar Sesión</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?r=auth/register">Registrarse</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?r=auth/logout">Cerrar Sesión</a></li>
+                        <!-- Logout -->
+                        <li class="nav-item"><a class="nav-link text-danger" href="?r=auth/logout">Cerrar Sesión</a></li>
+
+                    <?php else: ?>
+                        <!-- Usuario NO logueado -->
+                        <li class="nav-item"><a class="nav-link" href="?r=auth/login&type=particular">Iniciar Sesión</a></li>
+                        <li class="nav-item"><a class="nav-link" href="?r=auth/register&type=particular">Registrarse</a></li>
+                    <?php endif; ?>
+
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="logo">
-        <img src="/assets/logo.png" alt="Logo del Proyecto"
-             onerror="this.onerror=null; this.src='https://placehold.co/150x150'">
-    </div>
-
     <main>
-        <?php include $contenido; ?>
+        <?php include isset($contenido) ? $contenido : ''; ?>
     </main>
+
 </body>
 </html>
