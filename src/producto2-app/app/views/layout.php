@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
+<!-- FullCalendar CSS & JS -->
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
+
 <head>
     <meta charset="UTF-8">
     <title>Gestión de Eventos</title>
@@ -58,6 +63,22 @@
     <main>
         <?php include isset($contenido) ? $contenido : ''; ?>
     </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendar');
+
+        if (calendarEl) {
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                events: <?php echo json_encode($eventos ?? []); ?>, // pasamos eventos PHP → JS
+            });
+
+            calendar.render();
+        }
+    });
+    </script>
 
 </body>
 </html>

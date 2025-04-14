@@ -1,9 +1,8 @@
 <?php
 
 class AuthController
-
+{
     // REGISTRO
-    {
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -14,6 +13,7 @@ class AuthController
             $email = trim($_POST['email']);
             $password = $_POST['password'];
             $confirm = $_POST['confirm'];
+            $type = $_POST['type'] ?? 'particular';
 
             // Validaciones básicas
             if (empty($username) || empty($email) || empty($password) || empty($confirm)) {
@@ -34,31 +34,49 @@ class AuthController
             // Comprobar si ya existe ese email
             $stmt = $db->prepare("SELECT id FROM usuarios WHERE email = ?");
             $stmt->execute([$email]);
-
             if ($stmt->fetch()) {
-                echo "Ya existe un usuario con ese correo.";
+                echo "Este correo ya está registrado.";
                 return;
             }
 
-            // Insertar nuevo usuario
-            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $tipo = 'particular'; // todos los registros desde la web son particulares
+            // Hash de contraseña
+            $hashed = password_hash($password, PASSWORD_DEFAULT);
 
-            $insert = $db->prepare("INSERT INTO usuarios (username, email, password, tipo) VALUES (?, ?, ?, ?)");
-            $insert->execute([$username, $email, $hashedPassword, $tipo]);
+            // Insertar en tabla usuarios
+            $stmt = $db->prepare("INSERT INTO usuarios (username, email, password, tipo, creado_en) VALUES (?, ?, ?, ?, NOW())");
+            $stmt->execute([$username, $email, $hashed, $type]);
 
-            // Redirigir al login
-            header("Location: ?r=auth/login&type=particular");
+            $usuario_id = $db->lastInsertId();
+
+            // Insertar según tipo
+            switch ($type) {
+                case 'hotel':
+                    $stmt = $db->prepare("INSERT INTO transfer_hotel (usuario, password, nombre, direccion) VALUES (?, ?, ?, '')");
+                    $stmt->execute([$usuario_id, $hashed, $username]);
+                    break;
+
+                case 'vehiculo':
+                    $stmt = $db->prepare("INSERT INTO transfer_vehiculo (email_conductor, password, Descripcion) VALUES (?, ?, ?)");
+                    $stmt->execute([$email, $hashed, $username]);
+                    break;
+
+                case 'particular':
+                default:
+                    $stmt = $db->prepare("INSERT INTO transfer_viajeros (nombre, email, password) VALUES (?, ?, ?)");
+                    $stmt->execute([$username, $email, $hashed]);
+                    break;
+            }
+
+            header("Location: ?r=auth/login&type=$type");
             exit;
-        } else {
-            // Mostrar formulario
-            $contenido = __DIR__ . '/../views/auth/register.php';
-            include __DIR__ . '/../views/layout.php';
         }
+
+        // Si no es POST, mostrar formulario
+        $contenido = __DIR__ . '/../views/auth/register.php';
+        include __DIR__ . '/../views/layout.php';
     }
 
-
-    //LOGIN
+    // LOGIN
     public function login()
     {
         require_once __DIR__ . '/../core/db.php';
@@ -74,13 +92,13 @@ class AuthController
                 return;
             }
 
-            // Buscar usuario por email
+            // Buscar usuario
             $stmt = $db->prepare("SELECT * FROM usuarios WHERE email = ?");
             $stmt->execute([$email]);
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($usuario && password_verify($password, $usuario['password'])) {
-                // Guardar sesión
+                // Guardar en sesión
                 $_SESSION['usuario'] = [
                     'id' => $usuario['id'],
                     'username' => $usuario['username'],
@@ -88,36 +106,41 @@ class AuthController
                     'tipo' => $usuario['tipo']
                 ];
 
-                // Redirigir
-                if ($usuario['tipo'] === 'admin') {
-                    header("Location: ?r=admin/index");
+                // Redirección según tipo
+                switch ($usuario['tipo']) {
+                    case 'admin':
+                        header("Location: ?r=admin/index");
+                        break;
+                    case 'hotel':
+                        header("Location: ?r=dashboard/hotel");
+                        break;
+                    case 'vehiculo':
+                        header("Location: ?r=dashboard/vehiculo");
+                        break;
+                    case 'particular':
+                    default:
+                            header("Location: ?r=dashboard/cliente");
+                            break;
+                    }
+                    exit;
                 } else {
-                    header("Location: ?r=perfil/index");
+                    echo "Credenciales incorrectas.";
+                    return;
                 }
-                exit;
             } else {
-                echo "Credenciales incorrectas.";
-                return;
+                $contenido = __DIR__ . '/../views/auth/login.php';
+                include __DIR__ . '/../views/layout.php';
             }
-        } else {
-            $contenido = __DIR__ . '/../views/auth/login.php';
-            include __DIR__ . '/../views/layout.php';
         }
-    }
 
 
     // LOGOUT
-
     public function logout()
     {
-        session_start(); // Por si acaso no está iniciado aún
-        session_unset(); // Elimina todas las variables de sesión
-        session_destroy(); // Destruye la sesión
-
-        // Redirige al login de particular por defecto
+        session_start();
+        session_unset();
+        session_destroy();
         header("Location: ?r=auth/login&type=particular");
         exit;
     }
-
-
 }

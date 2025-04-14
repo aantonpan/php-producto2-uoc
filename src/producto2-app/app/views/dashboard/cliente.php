@@ -1,6 +1,16 @@
 <div class="container py-4">
-    <h2>Bienvenido, <?= $_SESSION['usuario']['username'] ?></h2>
-    <p>Este es tu panel de usuario.</p>
+    <h2 class="mb-4">Bienvenido, <?= $_SESSION['usuario']['username'] ?></h2>
 
-    <!-- Aquí pondremos el calendario después -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            Calendario de reservas
+        </div>
+        <div class="card-body">
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+    <div class="mt-3 text-end">
+        <a href="?r=reserva/index" class="btn btn-outline-primary">Ver todas mis reservas</a>
+    </div>
 </div>
