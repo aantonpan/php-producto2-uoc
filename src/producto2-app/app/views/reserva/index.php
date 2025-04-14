@@ -47,10 +47,10 @@
                         <td>
                             <?php if ($puedeEditar): ?>
                                 <a href="?r=reserva/edit&id=<?= $res['id_reserva'] ?>" class="btn btn-sm btn-warning">Editar</a>
-                                <a href="?r=reserva/delete&id=<?= $res['id_reserva'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que quieres cancelar esta reserva?')">Cancelar</a>
+                                <a href="?r=reserva/delete&id=<?= $res['id_reserva'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que quieres cancelar esta reserva?')">Borrar</a>
                             <?php else: ?>
                                 <button class="btn btn-sm btn-secondary" disabled onclick="alert('No puedes modificar o cancelar reservas con menos de 48h de antelación.')">Editar</button>
-                                <button class="btn btn-sm btn-secondary" disabled onclick="alert('No puedes modificar o cancelar reservas con menos de 48h de antelación.')">Cancelar</button>
+                                <button class="btn btn-sm btn-secondary" disabled onclick="alert('No puedes modificar o cancelar reservas con menos de 48h de antelación.')">Borrar</button>
                             <?php endif; ?>
                         </td>
                     </tr>
