@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  web_producto2:
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    container_name: php_apache_producto2
+    ports:
+      - "8083:80"
+    volumes:
+      - ./src/producto2-app:/var/www
+      - ./src/producto2-app/public:/var/www/html
+    depends_on:
+      - mysql_producto2
+    networks:
+      - red_producto2
+
+  mysql_producto2:
+    image: mysql:8.0
+    container_name: mysql_bd_producto2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: producto2db
+      MYSQL_USER: phpower2
+      MYSQL_PASSWORD: phpower2
+    ports:
+      - "3307:3306"
+    networks:
+      - red_producto2
+
+  phpmyadmin_producto2:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_producto2
+    restart: always
+    ports:
+      - "8084:80"
+    environment:
+      PMA_HOST: mysql_producto2
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - mysql_producto2
+    networks:
+      - red_producto2
+
+networks:
+  red_producto2:
+    driver: bridge

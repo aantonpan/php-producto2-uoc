@@ -1,0 +1,16 @@
+# Ignorar archivos y carpetas innecesarias
+/vendor/
+/node_modules/
+/.env
+*.log
+*.sqlite
+.idea/
+/*.sql
+.DS_Store
+
+# Ignorar contenedor
+/vendor/
+/src/producto2-app/vendor/
+/src/producto2-app/node_modules/
+/src/producto2-app/.env
+src/producto2-app/.DS_Store
