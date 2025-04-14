@@ -23,9 +23,10 @@
                 <div class="mb-3">
                     <label class="form-label">Tipo de reserva</label>
                     <select name="id_tipo_reserva" class="form-select" required>
-                        <option value="1">Aeropuerto → Hotel</option>
-                        <option value="2">Hotel → Aeropuerto</option>
-                        <option value="3">Servicio Personalizado</option>
+                        <option value="">Selecciona...</option>
+                        <?php foreach ($tipo_reserva as $tipo_reserva): ?>
+                            <option value="<?= $tipo_reserva['id_tipo_reserva'] ?>"><?= htmlspecialchars($tipo_reserva['descripcion']) ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="mb-3">

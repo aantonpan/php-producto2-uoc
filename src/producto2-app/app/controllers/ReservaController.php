@@ -9,13 +9,26 @@ class ReservaController
 
         $usuario_id = $_SESSION['usuario']['id'];
 
-        $stmt = $db->prepare("SELECT * FROM transfer_reservas WHERE id_cliente = ?");
+        // Aseguramos JOIN correcto y campos existentes
+        $stmt = $db->prepare("
+        SELECT r.*, p.Precio, z.descripcion AS nombre_destino
+        FROM transfer_reservas r
+        LEFT JOIN transfer_precios p 
+            ON r.id_vehiculo = p.id_vehiculo AND r.id_destino = p.id_hotel
+        LEFT JOIN transfer_zona z
+            ON r.id_destino = z.id_zona
+        WHERE r.id_cliente = ?
+        ORDER BY r.fecha_entrada DESC
+    ");
+
         $stmt->execute([$usuario_id]);
         $reservas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $contenido = __DIR__ . '/../views/reserva/index.php';
         include __DIR__ . '/../views/layout.php';
     }
+
+
 
 
     public function edit()
@@ -32,23 +45,36 @@ class ReservaController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Guardar cambios
+            // Recogida de datos del formulario
             $fecha = $_POST['fecha_entrada'];
             $hora = $_POST['hora_entrada'];
             $vuelo = $_POST['numero_vuelo_entrada'];
             $origen = $_POST['origen_vuelo_entrada'];
+            $fecha_salida = $_POST['fecha_vuelo_salida'] ?? null;
+            $hora_salida = $_POST['hora_vuelo_salida'] ?? null;
+            $id_destino = $_POST['id_destino'];
+            $id_vehiculo = $_POST['id_vehiculo'];
+            $num_viajeros = $_POST['num_viajeros'];
 
             // Validar tiempo antes de actualizar
             $fechaHoraReserva = new DateTime($fecha . ' ' . $hora);
             $ahora = new DateTime();
 
-            if ($ahora->diff($fechaHoraReserva)->days < 2 || $fechaHoraReserva <= $ahora) {
+            if ($fechaHoraReserva <= $ahora || $ahora->diff($fechaHoraReserva)->days < 2) {
                 echo "No puedes modificar reservas con menos de 48h de antelación.";
                 return;
             }
 
-            $stmt = $db->prepare("UPDATE transfer_reservas SET fecha_entrada = ?, hora_entrada = ?, numero_vuelo_entrada = ?, origen_vuelo_entrada = ? WHERE id_reserva = ? AND id_cliente = ?");
-            $stmt->execute([$fecha, $hora, $vuelo, $origen, $id_reserva, $usuario_id]);
+            // Actualizar reserva
+            $stmt = $db->prepare("UPDATE transfer_reservas 
+                SET fecha_entrada = ?, hora_entrada = ?, numero_vuelo_entrada = ?, origen_vuelo_entrada = ?, 
+                    fecha_vuelo_salida = ?, hora_vuelo_salida = ?, id_destino = ?, id_vehiculo = ?, num_viajeros = ?
+                WHERE id_reserva = ? AND id_cliente = ?");
+            $stmt->execute([
+                $fecha, $hora, $vuelo, $origen,
+                $fecha_salida, $hora_salida, $id_destino, $id_vehiculo, $num_viajeros,
+                $id_reserva, $usuario_id
+            ]);
 
             header("Location: ?r=reserva/index");
             exit;
@@ -63,10 +89,16 @@ class ReservaController
                 return;
             }
 
+            // Obtener destinos y vehículos para los select
+            $destinos = $db->query("SELECT id_zona, descripcion FROM transfer_zona")->fetchAll(PDO::FETCH_ASSOC);
+            $vehiculos = $db->query("SELECT id_vehiculo, descripcion FROM transfer_vehiculo")->fetchAll(PDO::FETCH_ASSOC);
+
+            // Pasamos datos a la vista
             $contenido = __DIR__ . '/../views/reserva/edit.php';
             include __DIR__ . '/../views/layout.php';
         }
     }
+
 
     public function create()
     {
