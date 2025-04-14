@@ -5,7 +5,6 @@
 *.log
 *.sqlite
 .idea/
-/*.sql
 .DS_Store
 
 # Ignorar contenedor
