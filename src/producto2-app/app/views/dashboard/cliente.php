@@ -9,12 +9,13 @@
             <div id="calendar"></div>
         </div>
     </div>
+
     <div class="mt-3 text-end">
         <a href="?r=reserva/index" class="btn btn-outline-primary">Ver todas mis reservas</a>
     </div>
 </div>
 
-<!-- Modal Bootstrap para detalles de la reserva -->
+<!-- Modal -->
 <div class="modal fade" id="reservaModal" tabindex="-1" aria-labelledby="reservaModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -39,15 +40,10 @@
           <p><strong>Precio:</strong> <span id="modal-precio"></span> €</p>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <a href="#" id="btn-editar" class="btn btn-warning">Editar</a>
-        <a href="#" id="btn-cancelar" class="btn btn-danger" onclick="return confirm('¿Seguro que quieres borrar esta reserva?')">Borrar</a>
       </div>
     </div>
   </div>
 </div>
-
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -63,33 +59,27 @@ document.addEventListener('DOMContentLoaded', function () {
             right: 'dayGridMonth,timeGridWeek,listWeek'
         },
         events: <?= json_encode($GLOBALS['eventos']) ?>,
-
         eventClick: function(info) {
-            const event = info.event;
-            const props = event.extendedProps;
+            const e = info.event;
+            const props = e.extendedProps;
 
-            document.getElementById('modal-localizador').textContent = event.title;
-            document.getElementById('modal-fecha').textContent = event.start.toLocaleDateString();
-            document.getElementById('modal-hora').textContent = event.start.toLocaleTimeString();
-            document.getElementById('modal-vuelo').textContent = props.vuelo;
-            document.getElementById('modal-origen').textContent = props.origen;
-            document.getElementById('modal-fecha-salida').textContent = props.fechaSalida;
-            document.getElementById('modal-hora-salida').textContent = props.horaSalida;
-            document.getElementById('modal-destino').textContent = props.destino;
-            document.getElementById('modal-vehiculo').textContent = props.vehiculo;
-            document.getElementById('modal-viajeros').textContent = props.numViajeros;
-            document.getElementById('modal-precio').textContent = props.precio;
+            document.getElementById('modal-localizador').textContent = e.title;
+            document.getElementById('modal-fecha').textContent = e.start.toLocaleDateString();
+            document.getElementById('modal-hora').textContent = e.start.toLocaleTimeString();
+            document.getElementById('modal-vuelo').textContent = props.vuelo || 'N/D';
+            document.getElementById('modal-origen').textContent = props.origen || 'N/D';
+            document.getElementById('modal-fecha-salida').textContent = props.fechaSalida || '-';
+            document.getElementById('modal-hora-salida').textContent = props.horaSalida || '-';
+            document.getElementById('modal-destino').textContent = props.destino || 'N/D';
+            document.getElementById('modal-vehiculo').textContent = props.vehiculo || 'N/D';
+            document.getElementById('modal-viajeros').textContent = props.numViajeros || 'N/D';
+            document.getElementById('modal-precio').textContent = props.precio || 'N/D';
 
-            document.getElementById('btn-editar').href = '?r=reserva/edit&id=' + props.reservaId;
-            document.getElementById('btn-cancelar').href = '?r=reserva/delete&id=' + props.reservaId;
 
-            var myModal = new bootstrap.Modal(document.getElementById('reservaModal'));
-            myModal.show();
+            new bootstrap.Modal(document.getElementById('reservaModal')).show();
         }
     });
 
     calendar.render();
 });
 </script>
-
-
