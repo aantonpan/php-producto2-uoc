@@ -1,62 +1,98 @@
-<div class="container py-4">
-    <h2 class="mb-4">Mi perfil</h2>
+<h3 class="mb-4">Mi Perfil</h3>
 
-    <form method="POST" action="?r=perfil/update">
-        <div class="card">
-            <div class="card-body">
-                <?php if ($_SESSION['usuario']['tipo'] === 'particular'): ?>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Nombre</label>
-                            <input type="text" name="nombre" class="form-control" value="<?= $datos['nombre'] ?? '' ?>" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Primer apellido</label>
-                            <input type="text" name="apellido1" class="form-control" value="<?= $datos['apellido1'] ?? '' ?>" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Segundo apellido</label>
-                            <input type="text" name="apellido2" class="form-control" value="<?= $datos['apellido2'] ?? '' ?>">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Dirección</label>
-                            <input type="text" name="direccion" class="form-control" value="<?= $datos['direccion'] ?? '' ?>" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Código postal</label>
-                            <input type="text" name="codigoPostal" class="form-control" value="<?= $datos['codigoPostal'] ?? '' ?>" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Ciudad</label>
-                            <input type="text" name="ciudad" class="form-control" value="<?= $datos['ciudad'] ?? '' ?>" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">País</label>
-                            <input type="text" name="pais" class="form-control" value="<?= $datos['pais'] ?? '' ?>" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" value="<?= $datos['email'] ?? '' ?>" required>
-                        </div>
-                    </div>
+<?php if ($_SESSION['usuario']['tipo'] === 'particular'): ?>
+    <?php $editando = isset($_GET['edit']) && $_GET['edit'] === '1'; ?>
 
-                <?php elseif ($_SESSION['usuario']['tipo'] === 'admin'): ?>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Usuario</label>
-                            <input type="text" name="username" class="form-control" value="<?= $datos['username'] ?? '' ?>" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" value="<?= $datos['email'] ?? '' ?>" required>
-                        </div>
-                    </div>
-                <?php endif; ?>
+    <form method="POST" action="?r=perfil/edit">
+        <!-- Nombre -->
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <?php if ($editando): ?>
+                <input type="text" class="form-control" name="nombre" value="<?= htmlspecialchars($perfil['nombre'] ?? '') ?>">
+            <?php else: ?>
+                <div><?= htmlspecialchars($perfil['nombre'] ?? '-') ?></div>
+            <?php endif; ?>
+        </div>
 
-                <div class="d-grid mt-4">
-                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                </div>
-            </div>
+        <!-- Apellido 1 -->
+        <div class="mb-3">
+            <label class="form-label">Apellido 1</label>
+            <?php if ($editando): ?>
+                <input type="text" class="form-control" name="apellido1" value="<?= htmlspecialchars($perfil['apellido1'] ?? '') ?>">
+            <?php else: ?>
+                <div><?= htmlspecialchars($perfil['apellido1'] ?? '-') ?></div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Apellido 2 -->
+        <div class="mb-3">
+            <label class="form-label">Apellido 2</label>
+            <?php if ($editando): ?>
+                <input type="text" class="form-control" name="apellido2" value="<?= htmlspecialchars($perfil['apellido2'] ?? '') ?>">
+            <?php else: ?>
+                <div><?= htmlspecialchars($perfil['apellido2'] ?? '-') ?></div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Dirección -->
+        <div class="mb-3">
+            <label class="form-label">Dirección</label>
+            <?php if ($editando): ?>
+                <input type="text" class="form-control" name="direccion" value="<?= htmlspecialchars($perfil['direccion'] ?? '') ?>">
+            <?php else: ?>
+                <div><?= htmlspecialchars($perfil['direccion'] ?? '-') ?></div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Código Postal -->
+        <div class="mb-3">
+            <label class="form-label">Código Postal</label>
+            <?php if ($editando): ?>
+                <input type="text" class="form-control" name="codigoPostal" value="<?= htmlspecialchars($perfil['codigoPostal'] ?? '') ?>">
+            <?php else: ?>
+                <div><?= htmlspecialchars($perfil['codigoPostal'] ?? '-') ?></div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Ciudad -->
+        <div class="mb-3">
+            <label class="form-label">Ciudad</label>
+            <?php if ($editando): ?>
+                <input type="text" class="form-control" name="ciudad" value="<?= htmlspecialchars($perfil['ciudad'] ?? '') ?>">
+            <?php else: ?>
+                <div><?= htmlspecialchars($perfil['ciudad'] ?? '-') ?></div>
+            <?php endif; ?>
+        </div>
+
+        <!-- País -->
+        <div class="mb-3">
+            <label class="form-label">País</label>
+            <?php if ($editando): ?>
+                <input type="text" class="form-control" name="pais" value="<?= htmlspecialchars($perfil['pais'] ?? '') ?>">
+            <?php else: ?>
+                <div><?= htmlspecialchars($perfil['pais'] ?? '-') ?></div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Email (solo mostrar) -->
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <div><?= htmlspecialchars($perfil['email'] ?? '-') ?></div>
+        </div>
+
+        <!-- Botones -->
+        <div class="mt-4 d-flex gap-2">
+            <?php if ($editando): ?>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="?r=perfil/index" class="btn btn-secondary">Cancelar</a>
+            <?php else: ?>
+                <a href="?r=perfil/index&edit=1" class="btn btn-warning">Editar Perfil</a>
+            <?php endif; ?>
         </div>
     </form>
-</div>
+
+<?php else: ?>
+    <p><strong>Usuario:</strong> <?= htmlspecialchars($perfil['username'] ?? '-') ?></p>
+    <p><strong>Email:</strong> <?= htmlspecialchars($perfil['email'] ?? '-') ?></p>
+    <p><strong>Tipo:</strong> <?= htmlspecialchars($perfil['tipo'] ?? '-') ?></p>
+<?php endif; ?>

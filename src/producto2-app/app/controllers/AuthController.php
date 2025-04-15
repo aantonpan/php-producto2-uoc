@@ -60,11 +60,14 @@ class AuthController
                     $stmt->execute([$email, $hashed, $username]);
                     break;
 
-                case 'particular':
-                default:
-                    $stmt = $db->prepare("INSERT INTO transfer_viajeros (nombre, email, password) VALUES (?, ?, ?)");
-                    $stmt->execute([$username, $email, $hashed]);
-                    break;
+                    case 'particular':
+                        default:
+                            $stmt = $db->prepare("INSERT INTO transfer_viajeros (
+                                nombre, apellido1, apellido2, direccion, codigoPostal, ciudad, pais, email, password
+                            ) VALUES (?, '', '', '', '', '', '', ?, ?)");
+                            $stmt->execute([$username, $email, $hashed]);
+                            break;
+                        
             }
 
             header("Location: ?r=auth/login&type=$type");

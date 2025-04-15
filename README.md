@@ -15,3 +15,6 @@ docker compose up -d --build
 ## Views
 
 - Home: http://localhost:8083/?r=home/index
+- LogIn Particular: http://localhost:8083/?r=auth/login&type=particular
+- Login Administrador: http://localhost:8083/?r=auth/login&type=admin
+- Dashboard Cliente: http://localhost:8083/?r=dashboard/cliente
