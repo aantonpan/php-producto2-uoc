@@ -10,3 +10,8 @@ Este proyecto es parte del módulo de PHP en la UOC. Incluye:
 
 ```bash
 docker compose up -d --build
+
+
+## Views
+
+- Home: http://localhost:8083/?r=home/index
