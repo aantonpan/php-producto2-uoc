@@ -1,3 +1,7 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+
+
 <div class="container py-4">
     <h2 class="mb-4">Crear nueva reserva</h2>
 
@@ -24,8 +28,11 @@
                     <label class="form-label">Tipo de reserva</label>
                     <select name="id_tipo_reserva" class="form-select" required>
                         <option value="">Selecciona...</option>
-                        <?php foreach ($tipo_reserva as $tipo_reserva): ?>
-                            <option value="<?= $tipo_reserva['id_tipo_reserva'] ?>"><?= htmlspecialchars($tipo_reserva['descripcion']) ?></option>
+                        <?php foreach ($tipos as $tipo): ?>
+                            <option value="<?= $tipo['id_tipo_reserva'] ?>"
+                                <?= (isset($reserva['id_tipo_reserva']) && $reserva['id_tipo_reserva'] == $tipo['id_tipo_reserva']) ? 'selected' : '' ?>>
+                                <?= $tipo['descripcion'] ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>

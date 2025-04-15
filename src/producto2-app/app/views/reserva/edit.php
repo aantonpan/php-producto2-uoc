@@ -1,3 +1,7 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+
+
 <div class="container py-4">
     <h2 class="mb-4">Editar reserva: <?= $reserva['localizador'] ?></h2>
 
@@ -27,16 +31,27 @@
                 <label class="form-label">Hora de vuelo de salida</label>
                 <input type="time" name="hora_vuelo_salida" class="form-control" value="<?= $reserva['hora_vuelo_salida'] ?>">
             </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Destino</label>
-                <select name="id_destino" class="form-control" required>
-                    <?php foreach ($destinos as $d): ?>
-                        <option value="<?= $d['id_zona'] ?>" <?= $d['id_zona'] == $reserva['id_destino'] ? 'selected' : '' ?>>
-                            <?= $d['descripcion'] ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+            <div class="mb-3">
+                    <label class="form-label">Tipo de reserva</label>
+                    <select name="id_tipo_reserva" class="form-select" required>
+                        <option value="">Selecciona...</option>
+                        <?php foreach ($tipos as $tipo): ?>
+                            <option value="<?= $tipo['id_tipo_reserva'] ?>"
+                                <?= (isset($reserva['id_tipo_reserva']) && $reserva['id_tipo_reserva'] == $tipo['id_tipo_reserva']) ? 'selected' : '' ?>>
+                                <?= $tipo['descripcion'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Destino</label>
+                    <select name="id_destino" class="form-select" required>
+                        <option value="">Selecciona...</option>
+                        <?php foreach ($destinos as $destino): ?>
+                            <option value="<?= $destino['id_zona'] ?>"><?= htmlspecialchars($destino['descripcion']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             <div class="col-md-6 mb-3">
                 <label class="form-label">Vehículo</label>
                 <select name="id_vehiculo" class="form-control" required>

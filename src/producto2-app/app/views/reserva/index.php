@@ -1,7 +1,12 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between mb-3">
         <h2>Mis reservas</h2>
-        <a href="?r=reserva/create" class="btn btn-primary">Nueva reserva</a>
+        <button class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#formModal"
+                data-url="?r=reserva/create&modal=1">
+            Nueva reserva
+        </button>
     </div>
 
     <?php if (empty($reservas)): ?>
@@ -42,15 +47,17 @@
                         <td><?= $res['nombre_destino'] ?></td>
                         <td><?= $res['num_viajeros'] ?></td>
                         <td><?= isset($res['Precio']) ? $res['Precio'] . ' €' : 'N/D' ?></td>
-
-
                         <td>
                             <?php if ($puedeEditar): ?>
-                                <a href="?r=reserva/edit&id=<?= $res['id_reserva'] ?>" class="btn btn-sm btn-warning">Editar</a>
-                                <a href="?r=reserva/delete&id=<?= $res['id_reserva'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que quieres cancelar esta reserva?')">Borrar</a>
+                                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#formModal"
+                                        data-url="?r=reserva/edit&id=<?= $res['id_reserva'] ?>&modal=1">
+                                    Editar
+                                </button>
+                                <a href="?r=reserva/delete&id=<?= $res['id_reserva'] ?>" class="btn btn-sm btn-danger"
+                                   onclick="return confirm('¿Seguro que quieres cancelar esta reserva?')">Borrar</a>
                             <?php else: ?>
-                                <button class="btn btn-sm btn-secondary" disabled onclick="alert('No puedes modificar o cancelar reservas con menos de 48h de antelación.')">Editar</button>
-                                <button class="btn btn-sm btn-secondary" disabled onclick="alert('No puedes modificar o cancelar reservas con menos de 48h de antelación.')">Borrar</button>
+                                <button class="btn btn-sm btn-secondary" disabled>Editar</button>
+                                <button class="btn btn-sm btn-secondary" disabled>Borrar</button>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -59,3 +66,36 @@
         </table>
     <?php endif ?>
 </div>
+
+<!-- Modal de creación/edición -->
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="formModalLabel">Formulario de reserva</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body p-0">
+        <iframe id="formFrame" src="" style="width: 100%; height: 75vh; border: none;"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const formModal = document.getElementById('formModal');
+  const formFrame = document.getElementById('formFrame');
+
+  if (formModal && formFrame) {
+    formModal.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget;
+      if (button && button.getAttribute('data-url')) {
+        formFrame.src = button.getAttribute('data-url');
+      }
+    });
+
+    formModal.addEventListener('hidden.bs.modal', function () {
+        window.location.reload();
+    });
+  }
+</script>

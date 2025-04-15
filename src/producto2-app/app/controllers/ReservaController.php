@@ -30,92 +30,124 @@ class ReservaController
 
 
 
-
+    //EDIT
     public function edit()
-    {
-        require_once __DIR__ . '/../core/db.php';
-        global $db;
+{
+    require_once __DIR__ . '/../core/db.php';
+    global $db;
 
-        $id_reserva = $_GET['id'] ?? null;
-        $usuario_id = $_SESSION['usuario']['id'];
+    $id_reserva = $_GET['id'] ?? null;
+    $usuario_id = $_SESSION['usuario']['id'];
 
-        if (!$id_reserva) {
-            echo "ID no proporcionado";
+    if (!$id_reserva) {
+        echo "ID no proporcionado";
+        return;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Recogida de datos del formulario
+        $fecha = $_POST['fecha_entrada'];
+        $hora = $_POST['hora_entrada'];
+        $vuelo = $_POST['numero_vuelo_entrada'];
+        $origen = $_POST['origen_vuelo_entrada'];
+        $fecha_salida = $_POST['fecha_vuelo_salida'] ?? null;
+        $hora_salida = $_POST['hora_vuelo_salida'] ?? null;
+        $id_destino = $_POST['id_destino'];
+        $id_vehiculo = $_POST['id_vehiculo'];
+        $num_viajeros = $_POST['num_viajeros'];
+
+        // Validar tiempo antes de actualizar
+        $fechaHoraReserva = new DateTime($fecha . ' ' . $hora);
+        $ahora = new DateTime();
+
+        if ($fechaHoraReserva <= $ahora || $ahora->diff($fechaHoraReserva)->days < 2) {
+            echo "No puedes modificar reservas con menos de 48h de antelación.";
             return;
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Recogida de datos del formulario
-            $fecha = $_POST['fecha_entrada'];
-            $hora = $_POST['hora_entrada'];
-            $vuelo = $_POST['numero_vuelo_entrada'];
-            $origen = $_POST['origen_vuelo_entrada'];
-            $fecha_salida = $_POST['fecha_vuelo_salida'] ?? null;
-            $hora_salida = $_POST['hora_vuelo_salida'] ?? null;
-            $id_destino = $_POST['id_destino'];
-            $id_vehiculo = $_POST['id_vehiculo'];
-            $num_viajeros = $_POST['num_viajeros'];
+        // Actualizar reserva
+        $stmt = $db->prepare("UPDATE transfer_reservas 
+            SET fecha_entrada = ?, hora_entrada = ?, numero_vuelo_entrada = ?, origen_vuelo_entrada = ?, 
+                fecha_vuelo_salida = ?, hora_vuelo_salida = ?, id_destino = ?, id_vehiculo = ?, num_viajeros = ?
+            WHERE id_reserva = ? AND id_cliente = ?");
+        $stmt->execute([
+            $fecha, $hora, $vuelo, $origen,
+            $fecha_salida, $hora_salida, $id_destino, $id_vehiculo, $num_viajeros,
+            $id_reserva, $usuario_id
+        ]);
 
-            // Validar tiempo antes de actualizar
-            $fechaHoraReserva = new DateTime($fecha . ' ' . $hora);
-            $ahora = new DateTime();
-
-            if ($fechaHoraReserva <= $ahora || $ahora->diff($fechaHoraReserva)->days < 2) {
-                echo "No puedes modificar reservas con menos de 48h de antelación.";
-                return;
-            }
-
-            // Actualizar reserva
-            $stmt = $db->prepare("UPDATE transfer_reservas 
-                SET fecha_entrada = ?, hora_entrada = ?, numero_vuelo_entrada = ?, origen_vuelo_entrada = ?, 
-                    fecha_vuelo_salida = ?, hora_vuelo_salida = ?, id_destino = ?, id_vehiculo = ?, num_viajeros = ?
-                WHERE id_reserva = ? AND id_cliente = ?");
-            $stmt->execute([
-                $fecha, $hora, $vuelo, $origen,
-                $fecha_salida, $hora_salida, $id_destino, $id_vehiculo, $num_viajeros,
-                $id_reserva, $usuario_id
-            ]);
-
-            header("Location: ?r=reserva/index");
+        // Redirección si es modal
+        if (!empty($_GET['modal'])) {
+            echo "<script>window.parent.location.href = '?r=reserva/index';</script>";
             exit;
         } else {
-            // Mostrar formulario con datos actuales
-            $stmt = $db->prepare("SELECT * FROM transfer_reservas WHERE id_reserva = ? AND id_cliente = ?");
-            $stmt->execute([$id_reserva, $usuario_id]);
-            $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
+            header("Location: ?r=reserva/index");
+            exit;
+        }
+    } else {
+        // Mostrar formulario con datos actuales
+        $stmt = $db->prepare("SELECT * FROM transfer_reservas WHERE id_reserva = ? AND id_cliente = ?");
+        $stmt->execute([$id_reserva, $usuario_id]);
+        $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$reserva) {
-                echo "Reserva no encontrada o no te pertenece.";
-                return;
-            }
+        if (!$reserva) {
+            echo "Reserva no encontrada o no te pertenece.";
+            return;
+        }
 
-            // Obtener destinos y vehículos para los select
-            $destinos = $db->query("SELECT id_zona, descripcion FROM transfer_zona")->fetchAll(PDO::FETCH_ASSOC);
-            $vehiculos = $db->query("SELECT id_vehiculo, descripcion FROM transfer_vehiculo")->fetchAll(PDO::FETCH_ASSOC);
+        // Obtener datos para los <select>
+        $destinos = $db->query("SELECT id_zona, descripcion FROM transfer_zona")->fetchAll(PDO::FETCH_ASSOC);
+        $vehiculos = $db->query("SELECT id_vehiculo, descripcion FROM transfer_vehiculo")->fetchAll(PDO::FETCH_ASSOC);
+        $tipos = $db->query("SELECT id_tipo_reserva, descripcion FROM transfer_tipo_reserva")->fetchAll(PDO::FETCH_ASSOC);
 
-            // Pasamos datos a la vista
-            $contenido = __DIR__ . '/../views/reserva/edit.php';
+        // Seleccionar vista
+        $esModal = isset($_GET['modal']) && $_GET['modal'] == '1';
+        $contenido = $esModal
+            ? __DIR__ . '/../views/reserva/modal_edit.php'
+            : __DIR__ . '/../views/reserva/edit.php';
+
+        if ($esModal) {
+            include $contenido;
+        } else {
             include __DIR__ . '/../views/layout.php';
         }
     }
+}
 
 
+
+
+    // CREATE
     public function create()
     {
         require_once __DIR__ . '/../core/db.php';
         global $db;
 
-        // Obtener zonas de destino
+        // Obtener datos para selects
         $destinos = $db->query("SELECT id_zona, descripcion FROM transfer_zona")->fetchAll(PDO::FETCH_ASSOC);
-
-        // Obtener vehículos
         $vehiculos = $db->query("SELECT id_vehiculo, descripcion FROM transfer_vehiculo")->fetchAll(PDO::FETCH_ASSOC);
+        $tipos = $db->query("SELECT id_tipo_reserva, descripcion FROM transfer_tipo_reserva")->fetchAll(PDO::FETCH_ASSOC);
 
-        $contenido = __DIR__ . '/../views/reserva/create.php';
-        include __DIR__ . '/../views/layout.php';
+        // Inicializamos reserva vacía para el form
+        $reserva = [];
+
+        // Seleccionar vista
+        $esModal = isset($_GET['modal']) && $_GET['modal'] == '1';
+        $contenido = $esModal
+            ? __DIR__ . '/../views/reserva/modal_create.php'
+            : __DIR__ . '/../views/reserva/create.php';
+       
+            if ($esModal) {
+            include $contenido;
+        } else {
+            include __DIR__ . '/../views/layout.php';
+        }
+                     
     }
 
 
+
+    //STORE
     public function store()
     {
         require_once __DIR__ . '/../core/db.php';
@@ -159,8 +191,15 @@ class ReservaController
             $fecha_salida, $hora_salida, $num_viajeros, $id_vehiculo
         ]);
 
-        header("Location: ?r=reserva/index");
-        exit;
+        if (!empty($_GET['modal'])) {
+            echo "<script>
+                window.parent.location.href = '?r=reserva/index';
+            </script>";
+            exit;
+        } else {
+            header("Location: ?r=reserva/index");
+            exit;
+        }
     }
 
 
@@ -208,8 +247,16 @@ class ReservaController
             $stmt->execute([$id_reserva]);
         }
 
-        header("Location: ?r=reserva/index");
-        exit;
+        if (!empty($_GET['modal'])) {
+            echo "<script>
+                window.parent.location.href = '?r=reserva/index';
+            </script>";
+            exit;
+        } else {
+            header("Location: ?r=reserva/index");
+            exit;
+        }
+
 }
 
 
