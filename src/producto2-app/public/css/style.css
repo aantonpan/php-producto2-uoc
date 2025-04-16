@@ -1,70 +1,120 @@
+/* === ESTILOS GENERALES DE LA PÁGINA === */
 body {
     font-family: Arial, sans-serif;
     background-color: #f8f9fa;
     padding: 2rem;
 }
 
-table {
-    border-collapse: collapse;
-    margin-top: 1rem;
+/* === CONTENEDOR DEL PERFIL === */
+.perfil-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
 }
 
-th, td {
-    padding: 0.5rem;
+/* === TÍTULO === */
+.perfil-container h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+    color: #222;
+}
+
+/* === ETIQUETAS DE CAMPOS === */
+.perfil-container .form-label {
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+    color: #444;
+}
+
+/* === INPUTS DE TEXTO === */
+.perfil-container input.form-control {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
     border: 1px solid #ccc;
 }
 
-
-#calendar {
-     min-height: 600px;
-    padding: 10px;
-}
-
-.perfil-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
-}
-
-.perfil-container h3 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    font-weight: bold;
-    color: #333;
-}
-
-.perfil-container .form-label {
+/* === VALORES EN MODO LECTURA === */
+.perfil-container div > strong {
     font-weight: 500;
-    color: #555;
+    color: #333;
+    display: block;
 }
 
-.perfil-container input.form-control {
-    font-size: 0.9rem;
-    padding: 0.45rem;
-    border-radius: 5px;
-}
-
+/* === IMAGEN DE PERFIL === */
 .perfil-container img.img-thumbnail {
-    border-radius: 50%;
-    margin: 1rem 0;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
+    border-radius: 50%;
     border: 2px solid #ddd;
+    margin-top: 0.5rem;
 }
 
+/* === CONTENEDOR DE IMAGEN (alineado a la derecha) === */
+.perfil-container .imagen-perfil,
+.perfil-container .text-center {
+    text-align: right;
+}
+
+/* === ESPACIADO ENTRE FILAS === */
+.perfil-container .row {
+    margin-bottom: 1rem;
+}
+
+/* === BOTONES === */
 .perfil-container .btn {
     min-width: 120px;
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem;
 }
 
-.text-muted {
+/* === BOTÓN DE EDITAR === */
+.perfil-container .btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #000;
+}
+
+/* === HOVER EN BOTONES === */
+.perfil-container .btn:hover {
+    opacity: 0.9;
+    transition: all 0.2s ease-in-out;
+}
+
+/* === EMAIL EN MODO LECTURA === */
+.perfil-container .text-muted {
     color: #6c757d !important;
 }
 
-.img-thumbnail.rounded-circle {
-    border: 2px solid #ddd;
-    padding: 4px;
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .perfil-container {
+        padding: 1rem;
+    }
+
+    .perfil-container .text-center {
+        text-align: center !important;
+        margin-top: 1rem;
+    }
+
+    .perfil-container img.img-thumbnail {
+        width: 120px;
+        height: 120px;
+    }
+    .perfil-foto {
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    
+    
+    
 }
