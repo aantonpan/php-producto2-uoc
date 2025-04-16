@@ -202,7 +202,7 @@ class ReservaController
         }
     }
 
-
+    //DELETE
     public function delete()
     {
         require_once __DIR__ . '/../core/db.php';
