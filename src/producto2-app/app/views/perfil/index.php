@@ -1,7 +1,8 @@
 <div class="container py-4">
     <!-- Encabezado -->
     <div class="mb-4">
-        <h4 class="fw-semibold text-dark mb-0">Perfil</h4>
+        <h4 class="fw-semibold text-dark mb-0"><i class="bi bi-person-circle"></i> Mi Perfil  
+        </h4>
         <p class="text-muted small">Revisa tu información personal</p>
     </div>
 
