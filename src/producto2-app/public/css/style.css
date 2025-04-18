@@ -289,7 +289,22 @@
     background-color: #6a4fb3;
     border-color: #6a4fb3;
   }
+
+  .fc-list-day-text {
+    color: var(--bs-primary);
+  }
   
+  .fc-list-day-side-text{
+    color: var(--bs-primary);
+  }
+
+  .fc-timegrid-axis-cushion{
+    color: var(--bs-primary);
+  }
+
+  .fc-timegrid-slot-label-cushion{
+    color: var(--bs-primary);
+  }
   /* ====== CABECERAS ====== */
   h2, h3, h4 {
     color: var(--bs-dark);
@@ -311,3 +326,40 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   }
   
+  /* Sidebar responsivo */
+  .offcanvas-md {
+    width: 240px;
+  }
+
+  @media (min-width: 768px) {
+    .offcanvas-md {
+        visibility: visible !important;
+        position: static;
+        transform: none;
+        border: none;
+    }
+  }
+
+/* HOME BANNER & CARDS */
+
+
+
+
+.banner-wrapper {
+  position: relative;
+}
+
+.banner-wrapper img {
+  filter: brightness(0.9);
+}
+
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      transform: translate(-50%, 20px);
+  }
+  to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+  }
+}
