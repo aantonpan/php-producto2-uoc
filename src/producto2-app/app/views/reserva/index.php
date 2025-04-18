@@ -84,15 +84,15 @@
 <!-- Modal de creación/edición con iframe -->
 <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-calendar-plus"></i> Formulario de Reserva</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+    <div class="modal-content border-0 rounded-4 shadow-sm">
+      <div class="modal-header bg-primary text-white rounded-top-4">
+        <h5 class="modal-title d-flex align-items-center gap-2" id="formModalLabel">
+          <i class="bi bi-calendar-plus"></i> Formulario de Reserva
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      <div class="modal-body">
-        <div class="iframe-wrapper">
-          <iframe id="formFrame" src="" class="form-iframe"></iframe>
-        </div>
+      <div class="modal-body p-0">
+        <iframe id="formFrame" class="form-iframe w-100" style="height: 80vh; border: none;"></iframe>
       </div>
     </div>
   </div>
@@ -101,17 +101,27 @@
 <script>
   const formModal = document.getElementById('formModal');
   const formFrame = document.getElementById('formFrame');
+  const formModalLabel = document.getElementById('formModalLabel');
 
   if (formModal && formFrame) {
     formModal.addEventListener('show.bs.modal', function (event) {
       const button = event.relatedTarget;
       if (button && button.getAttribute('data-url')) {
-        formFrame.src = button.getAttribute('data-url');
+        const url = button.getAttribute('data-url');
+        formFrame.src = url;
+
+        // Cambiar el título del modal según la acción
+        if (url.includes('create')) {
+          formModalLabel.innerHTML = '<i class="bi bi-plus-lg me-2"></i> Nueva reserva';
+        } else if (url.includes('edit')) {
+          formModalLabel.innerHTML = '<i class="bi bi-pencil-square me-2"></i> Editar reserva';
+        }
       }
     });
 
     formModal.addEventListener('hidden.bs.modal', function () {
-      window.location.reload();
+      formFrame.src = '';
+      window.location.reload(); // Recarga para reflejar cambios
     });
   }
 </script>

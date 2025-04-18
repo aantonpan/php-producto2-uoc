@@ -15,31 +15,89 @@
   </div>
 </div>
 
+
+
+<!-- Modal estilizado -->
 <div class="modal fade" id="reservaModal" tabindex="-1" aria-labelledby="reservaModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-journal-check"></i> Detalle de la Reserva</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+    <div class="modal-content border-0 shadow-sm rounded-4">
+      
+      <!-- CABECERA -->
+      <div class="modal-header bg-primary text-white rounded-top-4">
+        <h5 class="modal-title d-flex align-items-center gap-2">
+          <i class="bi bi-journal-check"></i> Detalle de la Reserva
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      <div class="modal-body">
-        <div class="reserva-info-list">
-          <div class="reserva-item"><strong>Localizador:</strong> <span id="modal-localizador"></span></div>
-          <div class="reserva-item"><strong>Fecha entrada:</strong> <span id="modal-fecha"></span></div>
-          <div class="reserva-item"><strong>Hora entrada:</strong> <span id="modal-hora"></span></div>
-          <div class="reserva-item"><strong>Nº Vuelo:</strong> <span id="modal-vuelo"></span></div>
-          <div class="reserva-item"><strong>Origen:</strong> <span id="modal-origen"></span></div>
-          <div class="reserva-item"><strong>Fecha salida:</strong> <span id="modal-fecha-salida"></span></div>
-          <div class="reserva-item"><strong>Hora salida:</strong> <span id="modal-hora-salida"></span></div>
-          <div class="reserva-item"><strong>Destino:</strong> <span id="modal-destino"></span></div>
-          <div class="reserva-item"><strong>Vehículo:</strong> <span id="modal-vehiculo"></span></div>
-          <div class="reserva-item"><strong>Viajeros:</strong> <span id="modal-viajeros"></span></div>
-          <div class="reserva-item"><strong>Precio:</strong> <span id="modal-precio"></span> €</div>
+
+      <!-- CUERPO -->
+      <div class="modal-body p-4">
+        <div class="row g-3">
+
+          <div class="col-md-6 border-bottom pb-2">
+            <strong class="text-muted">Localizador:</strong><br>
+            <span id="modal-localizador"></span>
+          </div>
+
+          <div class="col-md-6 border-bottom pb-2">
+            <strong class="text-muted">Fecha entrada:</strong><br>
+            <span id="modal-fecha"></span>
+          </div>
+
+          <div class="col-md-6 border-bottom pb-2">
+            <strong class="text-muted">Hora entrada:</strong><br>
+            <span id="modal-hora"></span>
+          </div>
+
+          <div class="col-md-6 border-bottom pb-2">
+            <strong class="text-muted">Nº Vuelo:</strong><br>
+            <span id="modal-vuelo"></span>
+          </div>
+
+          <div class="col-md-6 border-bottom pb-2">
+            <strong class="text-muted">Origen:</strong><br>
+            <span id="modal-origen"></span>
+          </div>
+
+          <div class="col-md-6 border-bottom pb-2">
+            <strong class="text-muted">Fecha salida:</strong><br>
+            <span id="modal-fecha-salida"></span>
+          </div>
+
+          <div class="col-md-6 border-bottom pb-2">
+            <strong class="text-muted">Hora salida:</strong><br>
+            <span id="modal-hora-salida"></span>
+          </div>
+
+          <div class="col-md-6 border-bottom pb-2">
+            <strong class="text-muted">Destino:</strong><br>
+            <span id="modal-destino"></span>
+          </div>
+
+          <div class="col-md-6 border-bottom pb-2">
+            <strong class="text-muted">Vehículo:</strong><br>
+            <span id="modal-vehiculo"></span>
+          </div>
+
+          <div class="col-md-6 border-bottom pb-2">
+            <strong class="text-muted">Viajeros:</strong><br>
+            <span id="modal-viajeros"></span>
+          </div>
+
+          <!-- Precio destacado al final -->
+          <div class="d-flex justify-content-end mt-4">
+            <div class="px-4 py-2 bg-secondary text-white fw-semibold shadow-sm">
+              <span id="modal-precio"></span> €
+            </div>
+          </div>
+
         </div>
       </div>
+
     </div>
   </div>
 </div>
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {

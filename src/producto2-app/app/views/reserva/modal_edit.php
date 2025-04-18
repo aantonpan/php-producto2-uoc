@@ -1,8 +1,11 @@
-<h3 class="mb-3">Editar reserva: <?= $reserva['localizador'] ?></h3>
-<form method="POST" action="?r=reserva/edit&id=<?= $reserva['id_reserva'] ?>&modal=1">
-    <?php include __DIR__ . '/_form_fields.php'; ?>
-    <div class="mt-3 d-flex justify-content-end gap-2">
-        <button type="submit" class="btn btn-primary">Guardar cambios</button>
-        <button type="button" class="btn btn-secondary" onclick="window.parent.location.href='?r=reserva/index'">Cancelar</button>
-    </div>
+
+<h5 class="text-primary mb-3"><i class="bi bi-pencil-square me-2"></i> Editar reserva: <?= $reserva['localizador'] ?></h5>
+
+<form method="POST" action="?r=reserva/update&id=<?= $reserva['id_reserva'] ?>&modal=1">
+  <?php include __DIR__ . '/_form_fields.php'; ?>
+  <div class="text-end mt-4">
+    <button type="submit" class="btn btn-primary rounded-pill px-4">
+      <i class="bi bi-save2 me-1"></i> Guardar Cambios
+    </button>
+  </div>
 </form>
