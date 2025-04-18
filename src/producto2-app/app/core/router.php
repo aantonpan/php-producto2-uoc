@@ -1,7 +1,7 @@
 <?php
 // app/core/router.php
 
-$ruta = $_GET['r'] ?? 'evento/index';
+$ruta = $_GET['r'] ?? 'home/index';
 list($controlador, $accion) = explode('/', $ruta);
 
 // Ruta absoluta al controlador
