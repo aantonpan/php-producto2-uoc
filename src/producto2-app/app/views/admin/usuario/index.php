@@ -27,9 +27,10 @@
               <td><?= ucfirst($u['tipo']) ?></td>
               <td><?= date('d/m/Y', strtotime($u['creado_en'])) ?></td>
               <td class="text-end">
-                <a href="?r=usuarioadmin/delete&id=<?= $u['id_usuario'] ?>" 
-                   class="btn btn-sm btn-danger rounded-pill"
-                   onclick="return confirm('¿Eliminar este usuario?')">
+                <a href="?r=usuarioadmin/edit&id=<?= $u['id'] ?>" class="btn btn-sm btn-warning rounded-pill me-2">
+                  <i class="bi bi-pencil"></i> Editar
+                </a>
+                <a href="?r=usuarioadmin/delete&id=<?= $u['id'] ?>" class="btn btn-sm btn-danger rounded-pill" onclick="return confirm('¿Eliminar este usuario?')">
                   <i class="bi bi-trash"></i> Borrar
                 </a>
               </td>

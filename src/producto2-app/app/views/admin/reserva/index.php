@@ -39,8 +39,8 @@
               <td><?= htmlspecialchars($r['num_viajeros']) ?></td>
               <td><?= htmlspecialchars($r['nombre_vehiculo']) ?></td>
               <td><?= htmlspecialchars($r['tipo_reserva']) ?></td>
-              <td><?= htmlspecialchars($r['nombre_usuario'] . ' ' . $r['apellidos_usuario']) ?></td>
-              <td><?= htmlspecialchars($r['email']) ?></td>
+              <td><?= htmlspecialchars($r['nombre_usuario'] ?? '') ?></td>
+              <td><?= htmlspecialchars($r['email'] ?? '') ?></td>
             </tr>
           <?php endforeach ?>
         </tbody>

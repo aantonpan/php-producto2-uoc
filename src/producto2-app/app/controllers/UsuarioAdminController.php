@@ -59,7 +59,7 @@ class UsuarioAdminController
             return;
         }
 
-        $stmt = $db->prepare("SELECT * FROM usuarios WHERE id_usuario = ?");
+        $stmt = $db->prepare("SELECT * FROM usuarios WHERE id = ?");
         $stmt->execute([$id]);
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -95,10 +95,10 @@ class UsuarioAdminController
 
         if (!empty($password)) {
             $hashed = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $db->prepare("UPDATE transfer_usuarios SET username = ?, email = ?, password = ?, tipo = ? WHERE id_usuario = ?");
+            $stmt = $db->prepare("UPDATE transfer_usuarios SET username = ?, email = ?, password = ?, tipo = ? WHERE id = ?");
             $stmt->execute([$username, $email, $hashed, $tipo, $id]);
         } else {
-            $stmt = $db->prepare("UPDATE transfer_usuarios SET username = ?, email = ?, tipo = ? WHERE id_usuario = ?");
+            $stmt = $db->prepare("UPDATE transfer_usuarios SET username = ?, email = ?, tipo = ? WHERE id = ?");
             $stmt->execute([$username, $email, $tipo, $id]);
         }
 
@@ -117,7 +117,7 @@ class UsuarioAdminController
             return;
         }
 
-        $stmt = $db->prepare("DELETE FROM transfer_usuarios WHERE id_usuario = ?");
+        $stmt = $db->prepare("DELETE FROM transfer_usuarios WHERE id = ?");
         $stmt->execute([$id]);
 
         header("Location: ?r=usuarioadmin/index");
