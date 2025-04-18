@@ -83,17 +83,20 @@
 
 <!-- Modal de creación/edición con iframe -->
 <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content border-0 rounded-4 shadow-sm">
+      
       <div class="modal-header bg-primary text-white rounded-top-4">
         <h5 class="modal-title d-flex align-items-center gap-2" id="formModalLabel">
-          <i class="bi bi-calendar-plus"></i> Formulario de Reserva
+          <i class="bi bi-journal-check"></i> Formulario de Reserva
         </h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
+      
       <div class="modal-body p-0">
         <iframe id="formFrame" class="form-iframe w-100" style="height: 80vh; border: none;"></iframe>
       </div>
+
     </div>
   </div>
 </div>
@@ -101,27 +104,48 @@
 <script>
   const formModal = document.getElementById('formModal');
   const formFrame = document.getElementById('formFrame');
-  const formModalLabel = document.getElementById('formModalLabel');
+  const modalTitle = document.getElementById('formModalLabel');
 
   if (formModal && formFrame) {
     formModal.addEventListener('show.bs.modal', function (event) {
       const button = event.relatedTarget;
-      if (button && button.getAttribute('data-url')) {
-        const url = button.getAttribute('data-url');
-        formFrame.src = url;
+      if (!button) return;
 
-        // Cambiar el título del modal según la acción
-        if (url.includes('create')) {
-          formModalLabel.innerHTML = '<i class="bi bi-plus-lg me-2"></i> Nueva reserva';
-        } else if (url.includes('edit')) {
-          formModalLabel.innerHTML = '<i class="bi bi-pencil-square me-2"></i> Editar reserva';
-        }
+      const url = button.getAttribute('data-url');
+      formFrame.src = url;
+
+      if (url.includes('create')) {
+        modalTitle.innerHTML = '<i class="bi bi-plus fs-3 me-2"></i> Nueva Reserva';
+        document.querySelector('#formModal .modal-header').classList.add('bg-primary', 'text-white');
+      } else if (url.includes('edit')) {
+        modalTitle.innerHTML = '<i class="bi bi-pencil-square"></i> Editar Reserva';
+        document.querySelector('#formModal .modal-header').classList.add('bg-primary', 'text-white');
+      } else {
+        modalTitle.innerHTML = '<i class="bi bi-journal-check"></i> Formulario de Reserva';
       }
+
     });
 
     formModal.addEventListener('hidden.bs.modal', function () {
       formFrame.src = '';
-      window.location.reload(); // Recarga para reflejar cambios
+      document.querySelector('#formModal .modal-header').classList.remove('bg-primary', 'text-white');
+      window.location.reload();
     });
+
+
+    // Escucha desde iframe para cerrar el modal con JS
+    window.addEventListener('message', function (event) {
+      if (event.data === 'closeModal') {
+        const modal = bootstrap.Modal.getInstance(formModal);
+        modal.hide();
+      }
+
+      // Actualiza el título con localizador si se recibe
+      if (event.data?.type === 'setTitle') {
+        const { icon, text } = event.data;
+        modalTitle.innerHTML = `<i class="bi ${icon} me-2"></i> ${text}`;
+      }
+    });
+
   }
 </script>
