@@ -17,16 +17,22 @@ $isParticular = $isLoggedIn && $_SESSION['usuario']['tipo'] === 'particular';
     <title>TransfersApp</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Bootstrap CSS & JS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- FullCalendar (versión global para uso directo en el navegador) -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js" defer></script>
+
+    <!-- Tu CSS -->
     <link rel="stylesheet" href="/css/style.css">
 
     <style>
-        body {
-            overflow-x: hidden;
-        }
+        body { overflow-x: hidden; }
         .sidebar {
             width: 250px;
             height: 100vh;
@@ -67,6 +73,7 @@ $isParticular = $isLoggedIn && $_SESSION['usuario']['tipo'] === 'particular';
         }
     </style>
 </head>
+
 <body>
 
 <?php if (!$esHome && $isLoggedIn): ?>
@@ -91,6 +98,7 @@ $isParticular = $isLoggedIn && $_SESSION['usuario']['tipo'] === 'particular';
             <li class="nav-item mt-4"><a class="nav-link text-danger" href="?r=auth/logout"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a></li>
         </ul>
     </div>
+
     <div class="content">
         <?php include isset($contenido) ? $contenido : ''; ?>
     </div>

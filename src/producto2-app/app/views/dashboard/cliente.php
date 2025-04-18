@@ -1,16 +1,10 @@
-<?php
-// cliente.php
-?>
-
 <div class="container py-4">
-  <!-- Encabezado -->
-  <h2 class="mb-4">Hola, <?= $_SESSION['usuario']['username'] ?></h2>
+  <h2 class="mb-4 d-flex align-items-center gap-2">
+    <i class="bi bi-calendar-event"></i> Mi Calendario
+  </h2>
 
-  <!-- Card calendario -->
   <div class="card">
-    <div class="card-header bg-primary text-white">
-      Calendario de reservas
-    </div>
+    <div class="card-header bg-primary text-white">Calendario de reservas</div>
     <div class="card-body">
       <div id="calendar"></div>
     </div>
@@ -21,20 +15,13 @@
   </div>
 </div>
 
-<!-- Modal de visualización de reserva -->
 <div class="modal fade" id="reservaModal" tabindex="-1" aria-labelledby="reservaModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
-
-      <!-- CABECERA -->
       <div class="modal-header">
-        <h5 class="modal-title">
-          <i class="bi bi-journal-check"></i> Detalle de la Reserva
-        </h5>
+        <h5 class="modal-title"><i class="bi bi-journal-check"></i> Detalle de la Reserva</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-
-      <!-- CUERPO -->
       <div class="modal-body">
         <div class="reserva-info-list">
           <div class="reserva-item"><strong>Localizador:</strong> <span id="modal-localizador"></span></div>
@@ -50,18 +37,19 @@
           <div class="reserva-item"><strong>Precio:</strong> <span id="modal-precio"></span> €</div>
         </div>
       </div>
-
-
     </div>
   </div>
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    var calendarEl = document.getElementById('calendar');
-    if (!calendarEl) return;
+    const calendarEl = document.getElementById('calendar');
+    if (!calendarEl || typeof FullCalendar === 'undefined') {
+      console.error('FullCalendar no está disponible');
+      return;
+    }
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    const calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       locale: 'es',
       headerToolbar: {
@@ -69,7 +57,7 @@
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,listWeek'
       },
-      events: <?= json_encode($GLOBALS['eventos']) ?>,
+      events: <?= json_encode($GLOBALS['eventos'] ?? []) ?>,
       eventClick: function (info) {
         const e = info.event;
         const props = e.extendedProps;
@@ -86,7 +74,8 @@
         document.getElementById('modal-viajeros').textContent = props.numViajeros || 'N/D';
         document.getElementById('modal-precio').textContent = props.precio || 'N/D';
 
-        new bootstrap.Modal(document.getElementById('reservaModal')).show();
+        const modal = new bootstrap.Modal(document.getElementById('reservaModal'));
+        modal.show();
       }
     });
 

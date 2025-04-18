@@ -24,7 +24,6 @@ class DashboardClienteController
             WHERE r.id_cliente = ?
         ");
 
-
         $stmt->execute([$usuario_id]);
         $reservas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -36,8 +35,7 @@ class DashboardClienteController
             $stmtPrecio->execute([$reserva['id_vehiculo'], $reserva['id_destino']]);
             $precio = $stmtPrecio->fetchColumn();
             $precio = $precio !== false ? $precio : 'N/D';
-        
-        
+
             // Agregar evento al array
             $eventos[] = [
                 'title' => 'Reserva ' . $reserva['localizador'],
@@ -53,12 +51,12 @@ class DashboardClienteController
                 'precio' => $precio
             ];
         }
-        
 
+        // 👇 Aseguramos que el calendario tenga acceso directo a los eventos
         $GLOBALS['eventos'] = $eventos;
 
+        // Vista
         $contenido = __DIR__ . '/../views/dashboard/cliente.php';
         include __DIR__ . '/../views/layout.php';
     }
-
 }
