@@ -13,7 +13,7 @@
         position: relative;
     }
     .banner-wrapper img {
-        filter: brightness(0.9);
+        filter: none;
     }
     @keyframes fadeInUp {
         from {
