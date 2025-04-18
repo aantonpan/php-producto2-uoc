@@ -86,15 +86,17 @@ $isParticular = $isLoggedIn && $_SESSION['usuario']['tipo'] === 'particular';
                 <li class="nav-item"><a class="nav-link text-<?= $isParticular ? 'primary' : 'white' ?>" href="?r=dashboardcliente/index"><i class="bi bi-calendar-event"></i> Calendario</a></li>
                 <li class="nav-item"><a class="nav-link text-<?= $isParticular ? 'primary' : 'white' ?>" href="?r=reserva/index"><i class="bi bi-journal-check"></i> Reservas</a></li>
                 <li class="nav-item"><a class="nav-link text-<?= $isParticular ? 'primary' : 'white' ?>" href="?r=perfil/index"><i class="bi bi-person"></i> Mi Perfil</a></li>
-            <?php elseif ($isAdmin): ?>
-                <li class="nav-item"><a class="nav-link text-white" href="?r=dashboardadmin/index"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="?r=usuario/index"><i class="bi bi-people"></i> Usuarios</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="?r=reserva/index"><i class="bi bi-journal-check"></i> Reservas</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="?r=perfil/index"><i class="bi bi-person"></i> Perfiles</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="?r=zona/index"><i class="bi bi-geo"></i> Zonas</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="?r=hotel/index"><i class="bi bi-building"></i> Hoteles</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="?r=vehiculo/index"><i class="bi bi-truck"></i> Vehículos</a></li>
-            <?php endif; ?>
+                <?php elseif ($isAdmin): ?>
+                    <li class="nav-item"><a class="nav-link text-white" href="?r=dashboardadmin/index"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="?r=usuarioadmin/index"><i class="bi bi-people"></i> Usuarios</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="?r=reservaadmin/index"><i class="bi bi-journal-check"></i> Reservas</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="?r=zonaadmin/index"><i class="bi bi-geo"></i> Zonas</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="?r=hoteladmin/index"><i class="bi bi-building"></i> Hoteles</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="?r=vehiculoadmin/index"><i class="bi bi-truck"></i> Vehículos</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="?r=precioadmin/index"><i class="bi bi-cash-coin"></i> Precios</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="?r=tiporeservaadmin/index"><i class="bi bi-tags"></i> Tipos de reserva</a></li>
+                <?php endif; ?>
+
             <li class="nav-item mt-4"><a class="nav-link text-danger" href="?r=auth/logout"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a></li>
         </ul>
     </div>
