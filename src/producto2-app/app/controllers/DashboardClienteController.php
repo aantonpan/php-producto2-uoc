@@ -16,7 +16,7 @@ class DashboardClienteController
                 r.num_viajeros, r.id_vehiculo, r.id_destino,
                 v.descripcion AS nombre_vehiculo,
                 z.descripcion AS nombre_destino,
-                p.Precio
+                COALESCE(p.Precio, 'N/D') AS precio
             FROM transfer_reservas r
             LEFT JOIN transfer_vehiculo v ON r.id_vehiculo = v.id_vehiculo
             LEFT JOIN transfer_zona z ON r.id_destino = z.id_zona
@@ -30,13 +30,6 @@ class DashboardClienteController
         $eventos = [];
 
         foreach ($reservas as $reserva) {
-            // Calcular precio
-            $stmtPrecio = $db->prepare("SELECT Precio FROM transfer_precios WHERE id_vehiculo = ? AND id_hotel = ?");
-            $stmtPrecio->execute([$reserva['id_vehiculo'], $reserva['id_destino']]);
-            $precio = $stmtPrecio->fetchColumn();
-            $precio = $precio !== false ? $precio : 'N/D';
-
-            // Agregar evento al array
             $eventos[] = [
                 'title' => 'Reserva ' . $reserva['localizador'],
                 'start' => $reserva['fecha_entrada'] . 'T' . $reserva['hora_entrada'],
@@ -48,14 +41,13 @@ class DashboardClienteController
                 'destino' => $reserva['nombre_destino'],
                 'vehiculo' => $reserva['nombre_vehiculo'],
                 'numViajeros' => $reserva['num_viajeros'],
-                'precio' => $precio
+                'precio' => $reserva['precio']
             ];
         }
 
-        // 👇 Aseguramos que el calendario tenga acceso directo a los eventos
+        // Aseguramos que el calendario se actualiza SIEMPRE con eventos actualizados
         $GLOBALS['eventos'] = $eventos;
 
-        // Vista
         $contenido = __DIR__ . '/../views/dashboard/cliente.php';
         include __DIR__ . '/../views/layout.php';
     }

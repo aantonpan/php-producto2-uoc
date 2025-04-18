@@ -110,6 +110,8 @@ class AuthController
                 ];
 
                 // Redirección según tipo
+                session_write_close();
+
                 switch ($usuario['tipo']) {
                     case 'admin':
                         header("Location: ?r=admin/index");
@@ -122,7 +124,7 @@ class AuthController
                         break;
                     case 'particular':
                     default:
-                            header("Location: ?r=dashboard/cliente");
+                            header("Location: ?r=dashboardcliente/index");
                             break;
                     }
                     exit;
