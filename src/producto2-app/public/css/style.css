@@ -280,8 +280,6 @@
       }
       
     
-  
-    
     /* Hover */
     .fc-daygrid-day-number:hover {
         color: #7e57c2;
@@ -329,13 +327,17 @@
   
   /* ====== IMÁGEN DE PERFIL ====== */
   .perfil-foto {
-    width: 110px;
-    height: 110px;
-    object-fit: cover;
+    border: 2px solid var(--bs-primary);
     border-radius: 50%;
-    border: 2px solid #dcd1f8;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* sombra suave */
+    display: block;
+    margin: 0 auto; /* centrado horizontal */
+    margin-top: 12px;
   }
+  
   
   /* Sidebar responsivo */
   .offcanvas-md {

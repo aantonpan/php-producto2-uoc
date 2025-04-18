@@ -4,8 +4,9 @@
   <!-- Encabezado -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-      <h4 class="fw-semibold text-dark mb-0"><i class="bi bi-journal-text"></i> Mis reservas</h4>
-      <p class="text-muted small mb-0">Gestiona tus próximas reservas de viaje</p>
+      <h2 class="mb-4 d-flex align-items-center gap-2">
+        <i class="bi bi-journal-check"></i> Mis Reservas
+      </h2>
     </div>
     <button class="btn btn-primary rounded-pill px-4"
             data-bs-toggle="modal"

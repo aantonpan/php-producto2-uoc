@@ -79,12 +79,12 @@ $isParticular = $isLoggedIn && $_SESSION['usuario']['tipo'] === 'particular';
 <?php if (!$esHome && $isLoggedIn): ?>
     <div class="sidebar <?= $isAdmin ? 'bg-dark text-white' : 'bg-white' ?>">
         <div class="logo text-<?= $isAdmin ? 'white' : 'primary' ?>">
-            <i class="bi bi-bootstrap"></i> TransfersApp
+            <i class="bi bi-layout-sidebar"></i> TransfersApp
         </div>
         <ul class="nav flex-column">
             <?php if ($isParticular): ?>
                 <li class="nav-item"><a class="nav-link text-<?= $isParticular ? 'primary' : 'white' ?>" href="?r=dashboardcliente/index"><i class="bi bi-calendar-event"></i> Calendario</a></li>
-                <li class="nav-item"><a class="nav-link text-<?= $isParticular ? 'primary' : 'white' ?>" href="?r=reserva/index"><i class="bi bi-bookmark"></i> Reservas</a></li>
+                <li class="nav-item"><a class="nav-link text-<?= $isParticular ? 'primary' : 'white' ?>" href="?r=reserva/index"><i class="bi bi-journal-check"></i> Reservas</a></li>
                 <li class="nav-item"><a class="nav-link text-<?= $isParticular ? 'primary' : 'white' ?>" href="?r=perfil/index"><i class="bi bi-person"></i> Mi Perfil</a></li>
             <?php elseif ($isAdmin): ?>
                 <li class="nav-item"><a class="nav-link text-white" href="?r=dashboardadmin/index"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
