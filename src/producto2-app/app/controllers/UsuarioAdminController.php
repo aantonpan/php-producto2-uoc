@@ -40,7 +40,7 @@ class UsuarioAdminController
         // Si se envió contraseña, la encriptamos
         $hashed = $password ? password_hash($password, PASSWORD_DEFAULT) : null;
 
-        $stmt = $db->prepare("INSERT INTO transfer_usuarios (username, email, password, tipo, creado_en)
+        $stmt = $db->prepare("INSERT INTO usuarios (username, email, password, tipo, creado_en)
                               VALUES (?, ?, ?, ?, NOW())");
         $stmt->execute([$username, $email, $hashed, $tipo]);
 
@@ -95,10 +95,10 @@ class UsuarioAdminController
 
         if (!empty($password)) {
             $hashed = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $db->prepare("UPDATE transfer_usuarios SET username = ?, email = ?, password = ?, tipo = ? WHERE id = ?");
+            $stmt = $db->prepare("UPDATE usuarios SET username = ?, email = ?, password = ?, tipo = ? WHERE id = ?");
             $stmt->execute([$username, $email, $hashed, $tipo, $id]);
         } else {
-            $stmt = $db->prepare("UPDATE transfer_usuarios SET username = ?, email = ?, tipo = ? WHERE id = ?");
+            $stmt = $db->prepare("UPDATE usuarios SET username = ?, email = ?, tipo = ? WHERE id = ?");
             $stmt->execute([$username, $email, $tipo, $id]);
         }
 
@@ -117,7 +117,7 @@ class UsuarioAdminController
             return;
         }
 
-        $stmt = $db->prepare("DELETE FROM transfer_usuarios WHERE id = ?");
+        $stmt = $db->prepare("DELETE FROM usuarios WHERE id = ?");
         $stmt->execute([$id]);
 
         header("Location: ?r=usuarioadmin/index");

@@ -34,8 +34,8 @@
     <!-- ZONAS -->
     <div class="col">
       <a href="?r=zonaadmin/index" class="text-decoration-none">
-        <div class="card bg-warning text-dark h-100 shadow-sm">
-          <div class="card-body text-center">
+      <div class="card bg-secondary text-white h-100 shadow-sm">
+      <div class="card-body text-center">
             <i class="bi bi-geo-alt display-4 mb-3"></i>
             <h5 class="card-title">Zonas</h5>
             <p class="card-text">Administrar zonas de destino.</p>
@@ -47,7 +47,7 @@
     <!-- HOTELES -->
     <div class="col">
       <a href="?r=hoteladmin/index" class="text-decoration-none">
-        <div class="card bg-secondary text-white h-100 shadow-sm">
+      <div class="card bg-warning text-dark h-100 shadow-sm">
           <div class="card-body text-center">
             <i class="bi bi-building display-4 mb-3"></i>
             <h5 class="card-title">Hoteles</h5>

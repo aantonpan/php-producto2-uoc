@@ -24,6 +24,7 @@
             <th>Tipo</th>
             <th>Usuario</th>
             <th>Email</th>
+            <th class="text-end">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +42,14 @@
               <td><?= htmlspecialchars($r['tipo_reserva']) ?></td>
               <td><?= htmlspecialchars($r['nombre_usuario'] ?? '') ?></td>
               <td><?= htmlspecialchars($r['email'] ?? '') ?></td>
+              <td class="text-end">
+                <a href="?r=reservaadmin/edit&id=<?= $r['id_reserva'] ?>" class="btn btn-sm btn-warning rounded-pill me-2">
+                  <i class="bi bi-pencil"></i> Editar
+                </a>
+                <a href="?r=reservaadmin/delete&id=<?= $r['id_reserva'] ?>" class="btn btn-sm btn-danger rounded-pill">
+                  <i class="bi bi-trash"></i> Borrar
+                </a>
+              </td>
             </tr>
           <?php endforeach ?>
         </tbody>
