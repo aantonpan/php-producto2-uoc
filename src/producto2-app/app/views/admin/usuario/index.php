@@ -1,6 +1,6 @@
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="d-flex align-items-center gap-2 mb-0">
+    <h2 class="d-flex align-items-center gap-2 mb-0 text-dark">
       <i class="bi bi-people"></i> Gestión de Usuarios
     </h2>
   </div>

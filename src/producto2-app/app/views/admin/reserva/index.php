@@ -1,9 +1,13 @@
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="d-flex align-items-center gap-2 mb-0">
-      <i class="bi bi-journal-check"></i> Todas las Reservas
+    <h2 class="d-flex align-items-center gap-2 mb-0 text-dark">
+      <i class="bi bi-journal-check"></i> Reservas
     </h2>
+    <a href="?r=reservaadmin/create" class="btn btn-success rounded-pill px-4">
+      <i class="bi bi-plus-circle"></i> Nueva reserva
+    </a>
   </div>
+
 
   <?php if (empty($reservas)): ?>
     <div class="alert alert-info shadow-sm">No hay reservas registradas.</div>

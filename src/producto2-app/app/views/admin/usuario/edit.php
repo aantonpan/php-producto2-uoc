@@ -30,7 +30,7 @@
         </div>
 
         <div class="text-end mt-4">
-          <button type="submit" class="btn btn-primary rounded-pill px-4">
+          <button type="submit" class="btn btn-success rounded-pill px-4">
             <i class="bi bi-check-circle"></i> Guardar cambios
           </button>
           <a href="?r=usuarioadmin/index" class="btn btn-outline-secondary rounded-pill px-4 ms-2">Cancelar</a>

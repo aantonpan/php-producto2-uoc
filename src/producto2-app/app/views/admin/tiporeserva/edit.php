@@ -8,7 +8,7 @@
         <input type="text" name="descripcion" class="form-control" value="<?= htmlspecialchars($tipo['descripcion']) ?>" required>
       </div>
       <div class="text-end">
-        <button type="submit" class="btn btn-primary rounded-pill px-4">Guardar cambios</button>
+        <button type="submit" class="btn btn-success rounded-pill px-4">Guardar cambios</button>
         <a href="?r=tiporeservaadmin/index" class="btn btn-outline-secondary rounded-pill px-4 ms-2">Cancelar</a>
       </div>
     </div>

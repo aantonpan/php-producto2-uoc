@@ -40,12 +40,12 @@ class HotelAdminController
         global $db;
 
         $stmt = $db->prepare("INSERT INTO transfer_hotel 
-            (id_zona, comision, usuario, password, nombre, direccion) 
+            (id_zona, Comision, usuario, password, nombre, direccion) 
             VALUES (?, ?, ?, ?, ?, ?)");
 
         $stmt->execute([
             $_POST['id_zona'],
-            $_POST['comision'],
+            $_POST['Comision'],
             $_POST['usuario'],
             $_POST['password'],
             $_POST['nombre'],
@@ -88,23 +88,32 @@ class HotelAdminController
             return;
         }
 
+        $id_zona = $_POST['id_zona'] ?? null;
+        $comision = $_POST['Comision'] ?? null;
+        $nombre = $_POST['nombre'] ?? null;
+        $direccion = $_POST['direccion'] ?? null;
+
+        if (!$id_zona || !$comision || !$nombre || !$direccion) {
+            echo "Todos los campos son obligatorios.";
+            return;
+        }
+
         $stmt = $db->prepare("UPDATE transfer_hotel SET 
-            id_zona = ?, comision = ?, usuario = ?, password = ?, nombre = ?, direccion = ?
+            id_zona = ?, Comision = ?, nombre = ?, direccion = ?
             WHERE id_hotel = ?");
 
         $stmt->execute([
-            $_POST['id_zona'],
-            $_POST['comision'],
-            $_POST['usuario'],
-            $_POST['password'],
-            $_POST['nombre'],
-            $_POST['direccion'],
+            $id_zona,
+            $comision,
+            $nombre,
+            $direccion,
             $id
         ]);
 
         header("Location: ?r=hoteladmin/index");
         exit;
     }
+
 
     public function delete()
     {

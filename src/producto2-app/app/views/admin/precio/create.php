@@ -5,7 +5,7 @@
     <div class="card p-4 shadow-sm border-0">
       <?php $precio = []; include __DIR__ . '/_form_fields.php'; ?>
       <div class="mt-4 text-end">
-        <button type="submit" class="btn btn-primary rounded-pill px-4">Guardar</button>
+        <button type="submit" class="btn btn-success rounded-pill px-4">Guardar</button>
         <a href="?r=precioadmin/index" class="btn btn-outline-secondary rounded-pill px-4 ms-2">Cancelar</a>
       </div>
     </div>
