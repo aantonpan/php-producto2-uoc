@@ -10,13 +10,15 @@
       <tbody>
         <?php foreach ($precios as $p): ?>
           <tr>
-            <td><?= $p['id_precio'] ?></td>
+            <td><?= $p['id_precios'] ?></td>
             <td><?= htmlspecialchars($p['hotel']) ?></td>
             <td><?= htmlspecialchars($p['vehiculo']) ?></td>
-            <td><?= number_format($p['precio'], 2) ?> €</td>
+            <td><?= number_format($p['Precio'], 2) ?> €</td>
             <td class="text-end">
-              <a href="?r=precioadmin/edit&id=<?= $p['id_precio'] ?>" class="btn btn-sm btn-warning">Editar</a>
-              <a href="?r=precioadmin/delete&id=<?= $p['id_precio'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar?')">Borrar</a>
+              <a href="?r=precioadmin/edit&id=<?= $p['id_precios'] ?>" class="btn btn-sm btn-warning rounded-pill me-2">
+              <i class="bi bi-pencil"></i> Editar
+              <a href="?r=precioadmin/delete&id=<?= $p['id_precios'] ?>" class="btn btn-sm btn-danger rounded-pill" onclick="return confirm('¿Eliminar este usuario?')">
+              <i class="bi bi-trash"></i> Borrar
             </td>
           </tr>
         <?php endforeach ?>

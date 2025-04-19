@@ -36,7 +36,7 @@ class ReservaAdminController
 
         $reserva = [];
 
-        $usuarios = $db->query("SELECT id_usuario, username, email FROM transfer_usuarios")->fetchAll(PDO::FETCH_ASSOC);
+        $usuarios = $db->query("SELECT id, username, email FROM usuarios")->fetchAll(PDO::FETCH_ASSOC);
         $destinos = $db->query("SELECT * FROM transfer_zona")->fetchAll(PDO::FETCH_ASSOC);
         $vehiculos = $db->query("SELECT * FROM transfer_vehiculo")->fetchAll(PDO::FETCH_ASSOC);
         $tipos = $db->query("SELECT * FROM transfer_tipo_reserva")->fetchAll(PDO::FETCH_ASSOC);
@@ -99,7 +99,7 @@ class ReservaAdminController
             return;
         }
 
-        $usuarios = $db->query("SELECT id_usuario, username, email FROM transfer_usuarios")->fetchAll(PDO::FETCH_ASSOC);
+        $usuarios = $db->query("SELECT id, username, email FROM usuarios")->fetchAll(PDO::FETCH_ASSOC);
         $destinos = $db->query("SELECT * FROM transfer_zona")->fetchAll(PDO::FETCH_ASSOC);
         $vehiculos = $db->query("SELECT * FROM transfer_vehiculo")->fetchAll(PDO::FETCH_ASSOC);
         $tipos = $db->query("SELECT * FROM transfer_tipo_reserva")->fetchAll(PDO::FETCH_ASSOC);

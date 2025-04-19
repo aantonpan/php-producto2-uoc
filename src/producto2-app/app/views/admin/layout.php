@@ -72,10 +72,13 @@
       <li class="nav-item"><a class="nav-link" href="?r=dashboardadmin/index"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
       <li class="nav-item"><a class="nav-link" href="?r=usuarioadmin/index"><i class="bi bi-people"></i> Usuarios</a></li>
       <li class="nav-item"><a class="nav-link" href="?r=reservaadmin/index"><i class="bi bi-journal-check"></i> Reservas</a></li>
-      <li class="nav-item"><a class="nav-link" href="?r=perfil/index"><i class="bi bi-person"></i> Perfiles</a></li>
       <li class="nav-item"><a class="nav-link" href="?r=zonaadmin/index"><i class="bi bi-geo"></i> Zonas</a></li>
       <li class="nav-item"><a class="nav-link" href="?r=hoteladmin/index"><i class="bi bi-building"></i> Hoteles</a></li>
       <li class="nav-item"><a class="nav-link" href="?r=vehiculoadmin/index"><i class="bi bi-truck"></i> Vehículos</a></li>
+      <li class="nav-item"><a class="nav-link" href="?r=precioadmin/index"><i class="bi bi-cash-coin"></i> Precios</a></li>
+
+
+      <li class="nav-item"><a class="nav-link" href="?r=perfil/index"><i class="bi bi-person"></i> Perfil</a></li>
       <li class="nav-item mt-4"><a class="nav-link text-danger" href="?r=auth/logout"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a></li>
     </ul>
   </div>

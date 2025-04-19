@@ -50,7 +50,7 @@ class PrecioAdminController
         global $db;
 
         $id = $_GET['id'];
-        $stmt = $db->prepare("SELECT * FROM transfer_precios WHERE id_precio = ?");
+        $stmt = $db->prepare("SELECT * FROM transfer_precios WHERE id_precios = ?");
         $stmt->execute([$id]);
         $precio = $stmt->fetch();
 
@@ -66,12 +66,12 @@ class PrecioAdminController
         require_once __DIR__ . '/../core/db.php';
         global $db;
 
-        $stmt = $db->prepare("UPDATE transfer_precios SET id_vehiculo = ?, id_hotel = ?, precio = ? WHERE id_precio = ?");
+        $stmt = $db->prepare("UPDATE transfer_precios SET id_vehiculo = ?, id_hotel = ?, precio = ? WHERE id_precios = ?");
         $stmt->execute([
             $_POST['id_vehiculo'],
             $_POST['id_hotel'],
             $_POST['precio'],
-            $_GET['id']
+            $_GET['id_precios']
         ]);
 
         header("Location: ?r=precioadmin/index");
@@ -83,7 +83,7 @@ class PrecioAdminController
         require_once __DIR__ . '/../core/db.php';
         global $db;
 
-        $stmt = $db->prepare("DELETE FROM transfer_precios WHERE id_precio = ?");
+        $stmt = $db->prepare("DELETE FROM transfer_precios WHERE id_precios = ?");
         $stmt->execute([$_GET['id']]);
 
         header("Location: ?r=precioadmin/index");

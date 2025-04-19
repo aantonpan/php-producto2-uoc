@@ -13,8 +13,10 @@
             <td><?= $z['id_zona'] ?></td>
             <td><?= htmlspecialchars($z['descripcion']) ?></td>
             <td class="text-end">
-              <a href="?r=zonaadmin/edit&id=<?= $z['id_zona'] ?>" class="btn btn-sm btn-warning">Editar</a>
-              <a href="?r=zonaadmin/delete&id=<?= $z['id_zona'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar?')">Borrar</a>
+              <a href="?r=zonaadmin/edit&id=<?= $z['id_zona'] ?>" class="btn btn-sm btn-warning rounded-pill me-2">
+              <i class="bi bi-pencil"></i> Editar
+              <a href="?r=zonaadmin/delete&id=<?= $z['id_zona'] ?>" class="btn btn-sm btn-danger rounded-pill" onclick="return confirm('¿Eliminar este usuario?')">
+              <i class="bi bi-trash"></i> Borrar
             </td>
           </tr>
         <?php endforeach ?>

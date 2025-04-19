@@ -4,8 +4,8 @@
     <select name="id_cliente" class="form-select" required>
       <option value="">Selecciona un cliente</option>
       <?php foreach ($usuarios as $u): ?>
-        <option value="<?= $u['id_usuario'] ?>"
-          <?= (isset($reserva['id_cliente']) && $reserva['id_cliente'] == $u['id_usuario']) ? 'selected' : '' ?>>
+        <option value="<?= $u['id'] ?>"
+          <?= (isset($reserva['id_cliente']) && $reserva['id_cliente'] == $u['id']) ? 'selected' : '' ?>>
           <?= htmlspecialchars($u['username']) ?> (<?= htmlspecialchars($u['email']) ?>)
         </option>
       <?php endforeach; ?>
@@ -27,32 +27,32 @@
 
   <div class="col-md-6">
     <label class="form-label">Fecha entrada</label>
-    <input type="date" name="fecha_entrada" class="form-control" value="<?= $reserva['fecha_entrada'] ?? '' ?>" required>
+    <input type="date" name="fecha_entrada" class="form-control" value="<?= htmlspecialchars($reserva['fecha_entrada'] ?? '') ?>" required>
   </div>
 
   <div class="col-md-6">
     <label class="form-label">Hora entrada</label>
-    <input type="time" name="hora_entrada" class="form-control" value="<?= $reserva['hora_entrada'] ?? '' ?>" required>
+    <input type="time" name="hora_entrada" class="form-control" value="<?= htmlspecialchars($reserva['hora_entrada'] ?? '') ?>" required>
   </div>
 
   <div class="col-md-6">
     <label class="form-label">Número de vuelo</label>
-    <input type="text" name="numero_vuelo_entrada" class="form-control" value="<?= $reserva['numero_vuelo_entrada'] ?? '' ?>" required>
+    <input type="text" name="numero_vuelo_entrada" class="form-control" value="<?= htmlspecialchars($reserva['numero_vuelo_entrada'] ?? '') ?>" required>
   </div>
 
   <div class="col-md-6">
     <label class="form-label">Origen vuelo</label>
-    <input type="text" name="origen_vuelo_entrada" class="form-control" value="<?= $reserva['origen_vuelo_entrada'] ?? '' ?>" required>
+    <input type="text" name="origen_vuelo_entrada" class="form-control" value="<?= htmlspecialchars($reserva['origen_vuelo_entrada'] ?? '') ?>" required>
   </div>
 
   <div class="col-md-6">
     <label class="form-label">Fecha vuelo salida</label>
-    <input type="date" name="fecha_vuelo_salida" class="form-control" value="<?= $reserva['fecha_vuelo_salida'] ?? '' ?>">
+    <input type="date" name="fecha_vuelo_salida" class="form-control" value="<?= htmlspecialchars($reserva['fecha_vuelo_salida'] ?? '') ?>">
   </div>
 
   <div class="col-md-6">
     <label class="form-label">Hora vuelo salida</label>
-    <input type="time" name="hora_vuelo_salida" class="form-control" value="<?= $reserva['hora_vuelo_salida'] ?? '' ?>">
+    <input type="time" name="hora_vuelo_salida" class="form-control" value="<?= htmlspecialchars($reserva['hora_vuelo_salida'] ?? '') ?>">
   </div>
 
   <div class="col-md-6">
@@ -83,6 +83,6 @@
 
   <div class="col-md-3">
     <label class="form-label">Nº de viajeros</label>
-    <input type="number" name="num_viajeros" class="form-control" value="<?= $reserva['num_viajeros'] ?? '' ?>" min="1" required>
+    <input type="number" name="num_viajeros" class="form-control" value="<?= htmlspecialchars($reserva['num_viajeros'] ?? '') ?>" min="1" required>
   </div>
 </div>
