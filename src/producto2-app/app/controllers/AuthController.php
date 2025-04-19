@@ -114,7 +114,7 @@ class AuthController
 
                 switch ($usuario['tipo']) {
                     case 'admin':
-                        header("Location: ?r=admin/index");
+                        header("Location: ?r=dashboard/admin");
                         break;
                     case 'hotel':
                         header("Location: ?r=dashboard/hotel");
@@ -145,7 +145,7 @@ class AuthController
         session_start();
         session_unset();
         session_destroy();
-        header("Location: ?r=auth/login&type=particular");
+        header("Location: ?r=home/index");
         exit;
     }
 }
