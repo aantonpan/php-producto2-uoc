@@ -99,7 +99,7 @@
 
     <!-- PERFIL DE ADMIN -->
     <div class="col">
-      <a href="?r=perfil/index" class="text-decoration-none">
+      <a href="?r=perfiladmin/index" class="text-decoration-none">
         <div class="card bg-danger text-white h-100 shadow-sm">
           <div class="card-body text-center">
             <i class="bi bi-person display-4 mb-3"></i>

@@ -77,7 +77,7 @@
       <li class="nav-item"><a class="nav-link" href="?r=vehiculoadmin/index"><i class="bi bi-truck"></i> Vehículos</a></li>
       <li class="nav-item"><a class="nav-link" href="?r=precioadmin/index"><i class="bi bi-cash-coin"></i> Precios</a></li>
       <li class="nav-item"><a class="nav-link" href="?r=tiporeservaadmin/index"><i class="bi bi-tags"></i> Tipos de Reserva</a></li>
-      <li class="nav-item"><a class="nav-link" href="?r=perfil/index"><i class="bi bi-person"></i> Mi perfil</a></li>
+      <li class="nav-item"><a class="nav-link" href="?r=perfiladmin/index"><i class="bi bi-person"></i> Mi perfil</a></li>
       <li class="nav-item mt-4"><a class="nav-link text-danger" href="?r=auth/logout"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a></li>
     </ul>
   </div>
