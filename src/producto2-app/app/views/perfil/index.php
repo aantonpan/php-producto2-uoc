@@ -14,16 +14,7 @@
 
         <div class="row align-items-start g-4">
 
-          <!-- Imagen a la izquierda -->
-          <div class="col-md-3 text-center d-flex flex-column align-items-center">
-          <?php if (!empty($perfil['imagen_perfil'])): ?>
-              <img src="uploads/perfiles/<?= htmlspecialchars($perfil['imagen_perfil']) ?>" alt="Perfil"
-                   class="img-thumbnail perfil-foto mb-2 rounded-circle"
-                   style="width: 150px; height: 150px; object-fit: cover;">
-            <?php else: ?>
-              <img src="https://via.placeholder.com/150" alt="Sin imagen"
-                   class="img-thumbnail perfil-foto mb-2 rounded-circle">
-            <?php endif; ?>
+          
 
             <?php if ($editando): ?>
               <input type="file" class="form-control form-control-sm mt-2" name="imagen_perfil" accept="image/*">
