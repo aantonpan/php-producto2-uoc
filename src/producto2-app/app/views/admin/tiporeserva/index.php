@@ -1,5 +1,5 @@
 <div class="container py-4">
-  <h2 class="mb-4"><i class="bi bi-tags"></i> Tipos de Reserva</h2>
+  <h2 class="mb-4 text-dark"><i class="bi bi-tags"></i> Tipos de Reserva</h2>
   <a href="?r=tiporeservaadmin/create" class="btn btn-primary mb-3">+ Nuevo tipo</a>
 
   <div class="table-responsive">

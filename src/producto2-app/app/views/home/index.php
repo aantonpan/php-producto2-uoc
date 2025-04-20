@@ -61,7 +61,7 @@
 
         <!-- HOTEL -->
         <div class="col">
-            <div class="card h-100 text-white" style="background-color: #fdd835;">
+            <div class="card h-100 text-white bg-success shadow">
                 <div class="card-body text-center">
                     <h5 class="card-title">Hotel</h5>
                     <p class="card-text">Acceso exclusivo para hoteles. (No implementado en este producto)</p>

@@ -12,7 +12,7 @@
   <div class="table-responsive">
     <table class="table table-hover">
       <thead class="table-light">
-        <tr><th>ID</th><th>Descripción</th><th></th></tr>
+        <tr><th>ID</th><th>Modelo de Vehículo</th><th></th></tr>
       </thead>
       <tbody>
         <?php foreach ($vehiculos as $v): ?>

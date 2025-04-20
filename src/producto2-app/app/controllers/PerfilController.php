@@ -92,18 +92,6 @@ class PerfilController
                     WHERE email = ?");
                 $stmt->execute([$nombre, $apellido1, $apellido2, $direccion, $codigoPostal, $ciudad, $pais, $email]);
             }
-            
-            if ($nombreImagen) {
-                $stmt = $db->prepare("UPDATE transfer_viajeros 
-                    SET nombre = ?, apellido1 = ?, apellido2 = ?, direccion = ?, codigoPostal = ?, ciudad = ?, pais = ?, imagen_perfil = ?
-                    WHERE email = ?");
-                $stmt->execute([$nombre, $apellido1, $apellido2, $direccion, $codigoPostal, $ciudad, $pais, $nombreImagen, $email]);
-            } else {
-                $stmt = $db->prepare("UPDATE transfer_viajeros 
-                    SET nombre = ?, apellido1 = ?, apellido2 = ?, direccion = ?, codigoPostal = ?, ciudad = ?, pais = ?
-                    WHERE email = ?");
-                $stmt->execute([$nombre, $apellido1, $apellido2, $direccion, $codigoPostal, $ciudad, $pais, $email]);
-            }
 
 
             header("Location: ?r=perfil/index");
