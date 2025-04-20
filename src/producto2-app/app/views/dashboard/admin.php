@@ -1,5 +1,5 @@
 <div class="container py-4">
-  <h2 class="mb-4 d-flex align-items-center gap-2">
+  <h2 class="mb-4 d-flex align-items-center gap-2 text-dark">
     <i class="bi bi-speedometer2"></i> Bienvenido/a al Panel de Administración
   </h2>
 
@@ -100,7 +100,7 @@
     <!-- PERFIL DE ADMIN -->
     <div class="col">
       <a href="?r=perfil/index" class="text-decoration-none">
-        <div class="card bg-light text-dark h-100 shadow-sm">
+        <div class="card bg-danger text-white h-100 shadow-sm">
           <div class="card-body text-center">
             <i class="bi bi-person display-4 mb-3"></i>
             <h5 class="card-title">Mi perfil</h5>

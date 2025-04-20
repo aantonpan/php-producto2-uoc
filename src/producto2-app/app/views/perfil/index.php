@@ -1,7 +1,7 @@
 <div class="container py-4">
-  <h2 class="mb-4 d-flex align-items-center gap-2">
-    <i class="bi bi-person"></i> Mi Perfil
-  </h2>
+<h2 class="mb-4 d-flex align-items-center gap-2 <?= $_SESSION['usuario']['tipo'] === 'admin' ? 'text-dark' : '' ?>">
+  <i class="bi bi-person"></i> Mi Perfil
+</h2>
 
   <?php if (!empty($perfil['email'])): ?>
     <?php $editando = isset($_GET['edit']) && $_GET['edit'] === '1'; ?>
@@ -82,22 +82,27 @@
 
           </div> <!-- /.col-md-9 -->
         </div> <!-- /.row -->
+              <!-- Dentro del <form> antes de cerrarlo -->
+        <?php if ($editando): ?>
+          <div class="mt-3 text-end">
+            <button type="submit" class="btn btn-primary rounded-pill px-4">
+              <i class="bi bi-save"></i> Guardar
+            </button>
+            <a href="?r=perfil/index" class="btn btn-outline-secondary rounded-pill px-4 ms-2">Cancelar</a>
+          </div>
+        <?php endif; ?>
 
       </form>
 
       <!-- BOTONES FUERA DEL FORM -->
-      <div class="mt-3 text-end">
-        <?php if ($editando): ?>
-          <a href="?r=perfil/index" class="btn btn-primary rounded-pill px-4">
-            <i class="bi bi-save"></i> Guardar
-          </a>
-          <a href="?r=perfil/index" class="btn btn-outline-secondary rounded-pill px-4 ms-2">Cancelar</a>
-        <?php else: ?>
-          <a href="?r=perfil/index&edit=1" class="btn btn-warning rounded-pill px-4">
-            <i class="bi bi-pencil-square"></i> Editar Perfil
-          </a>
-        <?php endif; ?>
-      </div>
+<?php if (!$editando): ?>
+  <div class="mt-3 text-end">
+    <a href="?r=perfil/index&edit=1" class="btn btn-warning rounded-pill px-4">
+      <i class="bi bi-pencil-square"></i> Editar Perfil
+    </a>
+  </div>
+<?php endif; ?>
+
 
     </div> <!-- /.wrapper max-width -->
 
