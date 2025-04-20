@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="bg-white">
-  <form method="POST" action="?r=reserva/update&id=<?= $reserva['id_reserva'] ?>&modal=1">
+  <form method="POST" action="?r=reserva/edit&id=<?= $reserva['id_reserva'] ?>&modal=1">
     <div class="card border-0 shadow-sm rounded-4 p-4">
       <?php include __DIR__ . '/_form_fields.php'; ?>
 

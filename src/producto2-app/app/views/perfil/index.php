@@ -1,11 +1,11 @@
+<?php $editando = isset($_GET['edit']) && $_GET['edit'] === '1'; ?>
+
 <div class="container py-4">
 <h2 class="mb-4 d-flex align-items-center gap-2 <?= $_SESSION['usuario']['tipo'] === 'admin' ? 'text-dark' : '' ?>">
   <i class="bi bi-person"></i> Mi Perfil
 </h2>
 
   <?php if (!empty($perfil['email'])): ?>
-    <?php $editando = isset($_GET['edit']) && $_GET['edit'] === '1'; ?>
-
     <!-- WRAPPER que controla el ancho del contenido -->
     <div style="max-width: 960px;" class="mx-auto">
 
@@ -25,12 +25,10 @@
                    class="img-thumbnail perfil-foto mb-2 rounded-circle">
             <?php endif; ?>
 
-
             <?php if ($editando): ?>
               <input type="file" class="form-control form-control-sm mt-2" name="imagen_perfil" accept="image/*">
             <?php endif; ?>
           </div>
-          
 
           <!-- Info personal a la derecha -->
           <div class="col-md-9">
@@ -40,19 +38,19 @@
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Nombre</label>
                 <?= $editando
-                  ? '<input type="text" name="nombre" class="form-control" value="' . htmlspecialchars($perfil['nombre']) . '">'
+                  ? '<input type="text" name="nombre" class="form-control" value="' . htmlspecialchars($perfil['nombre']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['nombre']) . '</div>' ?>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Apellido 1</label>
                 <?= $editando
-                  ? '<input type="text" name="apellido1" class="form-control" value="' . htmlspecialchars($perfil['apellido1']) . '">'
+                  ? '<input type="text" name="apellido1" class="form-control" value="' . htmlspecialchars($perfil['apellido1']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['apellido1']) . '</div>' ?>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Apellido 2</label>
                 <?= $editando
-                  ? '<input type="text" name="apellido2" class="form-control" value="' . htmlspecialchars($perfil['apellido2']) . '">'
+                  ? '<input type="text" name="apellido2" class="form-control" value="' . htmlspecialchars($perfil['apellido2']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['apellido2']) . '</div>' ?>
               </div>
               <div class="col-md-3">
@@ -68,32 +66,46 @@
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Dirección</label>
                 <?= $editando
-                  ? '<input type="text" name="direccion" class="form-control" value="' . htmlspecialchars($perfil['direccion']) . '">'
+                  ? '<input type="text" name="direccion" class="form-control" value="' . htmlspecialchars($perfil['direccion']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['direccion']) . '</div>' ?>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Código Postal</label>
                 <?= $editando
-                  ? '<input type="text" name="codigoPostal" class="form-control" value="' . htmlspecialchars($perfil['codigoPostal']) . '">'
+                  ? '<input type="text" name="codigoPostal" class="form-control" value="' . htmlspecialchars($perfil['codigoPostal']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['codigoPostal']) . '</div>' ?>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Ciudad</label>
                 <?= $editando
-                  ? '<input type="text" name="ciudad" class="form-control" value="' . htmlspecialchars($perfil['ciudad']) . '">'
+                  ? '<input type="text" name="ciudad" class="form-control" value="' . htmlspecialchars($perfil['ciudad']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['ciudad']) . '</div>' ?>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">País</label>
                 <?= $editando
-                  ? '<input type="text" name="pais" class="form-control" value="' . htmlspecialchars($perfil['pais']) . '">'
+                  ? '<input type="text" name="pais" class="form-control" value="' . htmlspecialchars($perfil['pais']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['pais']) . '</div>' ?>
               </div>
             </div>
 
+            <?php if ($editando): ?>
+              <hr class="my-3">
+              <div class="row g-3 mb-2">
+                <div class="col-md-6">
+                  <label class="form-label text-muted text-uppercase small fw-semibold">Nueva contraseña</label>
+                  <input type="password" name="password" class="form-control">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-muted text-uppercase small fw-semibold">Repetir contraseña</label>
+                  <input type="password" name="password2" class="form-control">
+                </div>
+              </div>
+            <?php endif; ?>
+
           </div> <!-- /.col-md-9 -->
         </div> <!-- /.row -->
-              <!-- Dentro del <form> antes de cerrarlo -->
+
         <?php if ($editando): ?>
           <div class="mt-3 text-end">
             <button type="submit" class="btn btn-primary rounded-pill px-4">
@@ -106,14 +118,13 @@
       </form>
 
       <!-- BOTONES FUERA DEL FORM -->
-<?php if (!$editando): ?>
-  <div class="mt-3 text-end">
-    <a href="?r=perfil/index&edit=1" class="btn btn-warning rounded-pill px-4">
-      <i class="bi bi-pencil-square"></i> Editar Perfil
-    </a>
-  </div>
-<?php endif; ?>
-
+      <?php if (!$editando): ?>
+        <div class="mt-3 text-end">
+          <a href="?r=perfil/index&edit=1" class="btn btn-warning rounded-pill px-4">
+            <i class="bi bi-pencil-square"></i> Editar Perfil
+          </a>
+        </div>
+      <?php endif; ?>
 
     </div> <!-- /.wrapper max-width -->
 
