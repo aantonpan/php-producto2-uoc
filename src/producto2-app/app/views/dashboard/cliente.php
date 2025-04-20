@@ -116,6 +116,9 @@
         right: 'dayGridMonth,timeGridWeek,listWeek'
       },
       events: <?= json_encode($GLOBALS['eventos'] ?? []) ?>,
+      eventDidMount: function(info){
+        info.el.style.cursor = 'pointer';
+      },
       eventClick: function (info) {
         const e = info.event;
         const props = e.extendedProps;

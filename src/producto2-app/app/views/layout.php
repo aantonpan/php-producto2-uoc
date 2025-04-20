@@ -95,6 +95,7 @@ $isParticular = $isLoggedIn && $_SESSION['usuario']['tipo'] === 'particular';
                     <li class="nav-item"><a class="nav-link text-white" href="?r=vehiculoadmin/index"><i class="bi bi-truck"></i> Vehículos</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="?r=precioadmin/index"><i class="bi bi-cash-coin"></i> Precios</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="?r=tiporeservaadmin/index"><i class="bi bi-tags"></i> Tipos de reserva</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="?r=perfil/index"><i class="bi bi-person"></i> Mi perfil</a></li>
                 <?php endif; ?>
 
             <li class="nav-item mt-4"><a class="nav-link text-danger" href="?r=auth/logout"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a></li>

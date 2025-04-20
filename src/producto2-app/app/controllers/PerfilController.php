@@ -19,15 +19,21 @@ class PerfilController
 
         $perfil = [];
 
-        if ($tipo === 'particular') {
+        $stmt = $db->prepare("SELECT * FROM transfer_viajeros WHERE email = ?");
+        $stmt->execute([$usuario['email']]);
+        $perfil = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Si no existe perfil, lo creamos (solo con el email y el username como nombre)
+        if (!$perfil) {
+            $stmt = $db->prepare("INSERT INTO transfer_viajeros (email, nombre) VALUES (?, ?)");
+            $stmt->execute([$usuario['email'], $usuario['username']]);
+
+            // Volvemos a consultar
             $stmt = $db->prepare("SELECT * FROM transfer_viajeros WHERE email = ?");
             $stmt->execute([$usuario['email']]);
             $perfil = $stmt->fetch(PDO::FETCH_ASSOC);
-        } elseif ($tipo === 'admin') {
-            $stmt = $db->prepare("SELECT id, username, email, tipo FROM usuarios WHERE id = ?");
-            $stmt->execute([$id]);
-            $perfil = $stmt->fetch(PDO::FETCH_ASSOC);
         }
+
 
         if (!$perfil) {
             echo "No se pudo cargar el perfil del usuario.";
@@ -46,7 +52,7 @@ class PerfilController
         $usuario_id = $_SESSION['usuario']['id'];
         $tipo = $_SESSION['usuario']['tipo'];
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $tipo === 'particular') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre = $_POST['nombre'] ?? '';
             $apellido1 = $_POST['apellido1'] ?? '';
             $apellido2 = $_POST['apellido2'] ?? '';
@@ -73,17 +79,32 @@ class PerfilController
             }
 
             // Actualizar datos en la tabla transfer_viajeros
+            $email = $_SESSION['usuario']['email']; // Usa el email directamente
+
             if ($nombreImagen) {
                 $stmt = $db->prepare("UPDATE transfer_viajeros 
                     SET nombre = ?, apellido1 = ?, apellido2 = ?, direccion = ?, codigoPostal = ?, ciudad = ?, pais = ?, imagen_perfil = ?
-                    WHERE email = (SELECT email FROM usuarios WHERE id = ?)");
-                $stmt->execute([$nombre, $apellido1, $apellido2, $direccion, $codigoPostal, $ciudad, $pais, $nombreImagen, $usuario_id]);
+                    WHERE email = ?");
+                $stmt->execute([$nombre, $apellido1, $apellido2, $direccion, $codigoPostal, $ciudad, $pais, $nombreImagen, $email]);
             } else {
                 $stmt = $db->prepare("UPDATE transfer_viajeros 
                     SET nombre = ?, apellido1 = ?, apellido2 = ?, direccion = ?, codigoPostal = ?, ciudad = ?, pais = ?
-                    WHERE email = (SELECT email FROM usuarios WHERE id = ?)");
-                $stmt->execute([$nombre, $apellido1, $apellido2, $direccion, $codigoPostal, $ciudad, $pais, $usuario_id]);
+                    WHERE email = ?");
+                $stmt->execute([$nombre, $apellido1, $apellido2, $direccion, $codigoPostal, $ciudad, $pais, $email]);
             }
+            
+            if ($nombreImagen) {
+                $stmt = $db->prepare("UPDATE transfer_viajeros 
+                    SET nombre = ?, apellido1 = ?, apellido2 = ?, direccion = ?, codigoPostal = ?, ciudad = ?, pais = ?, imagen_perfil = ?
+                    WHERE email = ?");
+                $stmt->execute([$nombre, $apellido1, $apellido2, $direccion, $codigoPostal, $ciudad, $pais, $nombreImagen, $email]);
+            } else {
+                $stmt = $db->prepare("UPDATE transfer_viajeros 
+                    SET nombre = ?, apellido1 = ?, apellido2 = ?, direccion = ?, codigoPostal = ?, ciudad = ?, pais = ?
+                    WHERE email = ?");
+                $stmt->execute([$nombre, $apellido1, $apellido2, $direccion, $codigoPostal, $ciudad, $pais, $email]);
+            }
+
 
             header("Location: ?r=perfil/index");
             exit;
@@ -99,13 +120,21 @@ class PerfilController
             return;
         }
 
-        if ($tipo === 'particular') {
+        $stmt = $db->prepare("SELECT * FROM transfer_viajeros WHERE email = ?");
+        $stmt->execute([$usuario['email']]);
+        $perfil = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Si no existe, lo creamos
+        if (!$perfil) {
+            $stmt = $db->prepare("INSERT INTO transfer_viajeros (email, nombre) VALUES (?, ?)");
+            $stmt->execute([$usuario['email'], $usuario['username']]);
+
+            // Recargar perfil
             $stmt = $db->prepare("SELECT * FROM transfer_viajeros WHERE email = ?");
             $stmt->execute([$usuario['email']]);
             $perfil = $stmt->fetch(PDO::FETCH_ASSOC);
-        } else {
-            $perfil = $usuario;
         }
+
 
         $contenido = __DIR__ . '/../views/perfil/index.php';
         include __DIR__ . '/../views/layout.php';

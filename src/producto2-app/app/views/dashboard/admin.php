@@ -96,5 +96,19 @@
       </a>
     </div>
 
+
+    <!-- PERFIL DE ADMIN -->
+    <div class="col">
+      <a href="?r=perfil/index" class="text-decoration-none">
+        <div class="card bg-light text-dark h-100 shadow-sm">
+          <div class="card-body text-center">
+            <i class="bi bi-person display-4 mb-3"></i>
+            <h5 class="card-title">Mi perfil</h5>
+            <p class="card-text">Ver y editar tu perfil.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
   </div>
 </div>

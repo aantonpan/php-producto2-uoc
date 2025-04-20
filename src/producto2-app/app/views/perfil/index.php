@@ -3,7 +3,7 @@
     <i class="bi bi-person"></i> Mi Perfil
   </h2>
 
-  <?php if ($_SESSION['usuario']['tipo'] === 'particular'): ?>
+  <?php if (!empty($perfil['email'])): ?>
     <?php $editando = isset($_GET['edit']) && $_GET['edit'] === '1'; ?>
 
     <!-- WRAPPER que controla el ancho del contenido -->
@@ -97,9 +97,9 @@
       <!-- BOTONES FUERA DEL FORM -->
       <div class="mt-3 text-end">
         <?php if ($editando): ?>
-          <button form="form" type="submit" class="btn btn-primary rounded-pill px-4">
+          <a href="?r=perfil/index" class="btn btn-primary rounded-pill px-4">
             <i class="bi bi-save"></i> Guardar
-          </button>
+          </a>
           <a href="?r=perfil/index" class="btn btn-outline-secondary rounded-pill px-4 ms-2">Cancelar</a>
         <?php else: ?>
           <a href="?r=perfil/index&edit=1" class="btn btn-warning rounded-pill px-4">
