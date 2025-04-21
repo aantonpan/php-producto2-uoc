@@ -85,9 +85,9 @@ $bg = ($type === 'admin') ? 'bg-dark' : 'bg-primary';
                                     <label for="typeSelect" class="form-label">Tipo de usuario</label>
                                     <select class="form-select" id="typeSelect" name="type">
                                         <option value="particular" <?= $type === 'particular' ? 'selected' : '' ?>>Usuario Particular</option>
-                                        <option value="hotel" <?= $type === 'hotel' ? 'selected' : '' ?>>Hotel</option>
+                                        <!-- <option value="hotel" <?= $type === 'hotel' ? 'selected' : '' ?>>Hotel</option>
                                         <option value="vehiculo" <?= $type === 'vehiculo' ? 'selected' : '' ?>>Conductor</option>
-                                        <option value="admin" <?= $type === 'admin' ? 'selected' : '' ?>>Administrador</option>
+                                        <option value="admin" <?= $type === 'admin' ? 'selected' : '' ?>>Administrador</option> -->
                                     </select>
                                 </div>
 

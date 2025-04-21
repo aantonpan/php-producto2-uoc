@@ -37,6 +37,7 @@
           </tr>
         </thead>
         <tbody>
+        <tbody>
           <?php foreach ($reservas as $res): ?>
             <?php
               $fechaHora = new DateTime($res['fecha_entrada'] . ' ' . $res['hora_entrada']);
@@ -64,8 +65,8 @@
                     <i class="bi bi-pencil-square"></i> Editar
                   </button>
                   <a href="?r=reserva/delete&id=<?= $res['id_reserva'] ?>"
-                     class="btn btn-sm btn-danger rounded-pill"
-                     onclick="return confirm('¿Seguro que quieres cancelar esta reserva?')">
+                    class="btn btn-sm btn-danger rounded-pill"
+                    onclick="return confirm('¿Seguro que quieres cancelar esta reserva?')">
                     <i class="bi bi-trash"></i> Borrar
                   </a>
                 <?php else: ?>
@@ -74,7 +75,8 @@
                 <?php endif; ?>
               </td>
             </tr>
-          <?php endforeach ?>
+          <?php endforeach; ?>
+
         </tbody>
       </table>
     </div>

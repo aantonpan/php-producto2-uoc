@@ -69,28 +69,30 @@ class PerfilController
                 $stmt->execute([password_hash($password, PASSWORD_DEFAULT), $usuario_id]);
             }
 
-            // Procesar imagen si se subió
-            $nombreImagen = null;
+            // Subida de imagen (si se ha subido)
+            $imagenPerfil = null;
             if (!empty($_FILES['imagen_perfil']['name'])) {
-                $nombreImagen = 'perfil_' . time() . '_' . basename($_FILES['imagen_perfil']['name']);
-                $rutaDestino = __DIR__ . '/../../public/uploads/perfiles/' . $nombreImagen;
+                $nombreArchivo = 'perfil_' . time() . '_' . basename($_FILES['imagen_perfil']['name']);
+                $rutaFinal = __DIR__ . '/../../public/uploads/' . $nombreArchivo;
 
-                if (!file_exists(dirname($rutaDestino))) {
-                    mkdir(dirname($rutaDestino), 0777, true);
+                if (!is_dir(dirname($rutaFinal))) {
+                    mkdir(dirname($rutaFinal), 0777, true);
                 }
 
-                if (!move_uploaded_file($_FILES['imagen_perfil']['tmp_name'], $rutaDestino)) {
+                if (move_uploaded_file($_FILES['imagen_perfil']['tmp_name'], $rutaFinal)) {
+                    $imagenPerfil = 'uploads/' . $nombreArchivo; // Esta es la ruta que se usará en <img>
+                } else {
                     echo "Error al subir la imagen.";
                     return;
                 }
             }
 
-            // Actualizar datos en transfer_viajeros
-            if ($nombreImagen) {
+            // Actualizar transfer_viajeros
+            if ($imagenPerfil) {
                 $stmt = $db->prepare("UPDATE transfer_viajeros 
                     SET nombre = ?, apellido1 = ?, apellido2 = ?, direccion = ?, codigoPostal = ?, ciudad = ?, pais = ?, imagen_perfil = ?
                     WHERE email = ?");
-                $stmt->execute([$nombre, $apellido1, $apellido2, $direccion, $codigoPostal, $ciudad, $pais, $nombreImagen, $email]);
+                $stmt->execute([$nombre, $apellido1, $apellido2, $direccion, $codigoPostal, $ciudad, $pais, $imagenPerfil, $email]);
             } else {
                 $stmt = $db->prepare("UPDATE transfer_viajeros 
                     SET nombre = ?, apellido1 = ?, apellido2 = ?, direccion = ?, codigoPostal = ?, ciudad = ?, pais = ?
@@ -103,7 +105,7 @@ class PerfilController
             exit;
         }
 
-        // Recarga datos para mostrar en vista si no es POST
+        // Mostrar formulario si no es POST
         $stmt = $db->prepare("SELECT * FROM usuarios WHERE id = ?");
         $stmt->execute([$usuario_id]);
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -117,6 +119,7 @@ class PerfilController
         $stmt->execute([$usuario['email']]);
         $perfil = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // Si no existe, crearlo
         if (!$perfil) {
             $stmt = $db->prepare("INSERT INTO transfer_viajeros (email, nombre) VALUES (?, ?)");
             $stmt->execute([$usuario['email'], $usuario['username']]);
@@ -129,4 +132,5 @@ class PerfilController
         $contenido = __DIR__ . '/../views/perfil/index.php';
         include __DIR__ . '/../views/layout.php';
     }
+
 }

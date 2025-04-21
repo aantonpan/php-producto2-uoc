@@ -74,7 +74,8 @@ class ReservaController
             $fechaHoraReserva = new DateTime($fecha . ' ' . $hora);
             $ahora = new DateTime();
 
-            if ($fechaHoraReserva <= $ahora || $ahora->diff($fechaHoraReserva)->days < 2) {
+            $interval = $ahora->diff($fechaHoraReserva);
+            if ($fechaHoraReserva <= $ahora || $interval->days < 2) {
                 echo "No puedes modificar reservas con menos de 48h de antelación.";
                 return;
             }
@@ -89,13 +90,8 @@ class ReservaController
                 $id_reserva, $usuario_id
             ]);
 
-            if (!empty($_GET['modal'])) {
-                echo "<script>window.parent.location.href = '?r=reserva/index';</script>";
-                exit;
-            } else {
-                header("Location: ?r=reserva/index");
-                exit;
-            }
+            echo "<script>window.parent.postMessage('closeModal', '*');</script>";
+            exit;
         } else {
             $stmt = $db->prepare("SELECT * FROM transfer_reservas WHERE id_reserva = ? AND id_cliente = ?");
             $stmt->execute([$id_reserva, $usuario_id]);
@@ -153,20 +149,15 @@ class ReservaController
             fecha_entrada, hora_entrada, numero_vuelo_entrada, origen_vuelo_entrada,
             fecha_vuelo_salida, hora_vuelo_salida, num_viajeros, id_vehiculo
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        
+
         $stmt->execute([
             $localizador, $tipo_reserva, $usuario_id, $fecha_reserva, $destino,
             $fecha, $hora, $vuelo, $origen,
             $fecha_salida, $hora_salida, $num_viajeros, $id_vehiculo
         ]);
 
-        if (!empty($_GET['modal'])) {
-            echo "<script>window.parent.location.href = '?r=reserva/index';</script>";
-            exit;
-        } else {
-            header("Location: ?r=reserva/index");
-            exit;
-        }
+        echo "<script>window.parent.postMessage('closeModal', '*');</script>";
+        exit;
     }
 
     public function delete()
@@ -210,14 +201,7 @@ class ReservaController
             $stmt->execute([$id_reserva]);
         }
 
-        if (!empty($_GET['modal'])) {
-            echo "<script>window.parent.location.href = '?r=reserva/index';</script>";
-            exit;
-        } else {
-            header("Location: ?r=reserva/index");
-            exit;
-        }
+        header("Location: ?r=reserva/index");
+        exit;
     }
-
-
 }

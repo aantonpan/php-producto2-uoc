@@ -22,7 +22,13 @@
         <tbody>
           <?php foreach ($usuarios as $u): ?>
             <tr>
-              <td><?= htmlspecialchars($u['username']) ?></td>
+            <td>
+              <?php if ($u['tipo'] === 'particular' && !empty($u['nombre_actualizado'])): ?>
+              <?= htmlspecialchars($u['nombre_actualizado'] . ' ' . $u['apellido1'] . ' ' . $u['apellido2']) ?>
+              <?php else: ?>
+                <?= htmlspecialchars($u['username']) ?>
+              <?php endif ?>
+            </td>
               <td><?= htmlspecialchars($u['email']) ?></td>
               <td><?= ucfirst($u['tipo']) ?></td>
               <td><?= date('d/m/Y', strtotime($u['creado_en'])) ?></td>

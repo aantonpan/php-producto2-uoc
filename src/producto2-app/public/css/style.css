@@ -229,6 +229,9 @@
     .modal-body .reserva-info-list {
       gap: 0.75rem;
     }
+
+    
+    
   }
   
   /* CALENDARIO */
@@ -250,6 +253,14 @@
         font-size: 0.9rem;
         font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
         transition: color 0.2s;
+    }
+
+    .fc-event-title {
+      color: var(--bs-primary) !important;
+    }
+
+    .fc-event-time {
+      color: var(--bs-primary) !important;
     }
 
     /* Días de la semana (encabezado del calendario) */
