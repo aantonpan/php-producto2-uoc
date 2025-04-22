@@ -52,7 +52,7 @@
                 <label class="form-label text-muted text-uppercase small fw-semibold">Email</label>
                 <?= $editando
                   ? '<input type="email" name="email" class="form-control" value="' . htmlspecialchars($_SESSION['usuario']['email']) . '">' 
-                  : '<div class="form-control-plaintext text-muted">' . htmlspecialchars($_SESSION['usuario']['email']) . '</div>' ?>
+                  : '<div class="form-control-plaintext">' . htmlspecialchars($_SESSION['usuario']['email']) . '</div>' ?>
               </div>
             </div>
 

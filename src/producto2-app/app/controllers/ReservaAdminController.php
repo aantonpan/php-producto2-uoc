@@ -1,5 +1,11 @@
-<?php
 
+
+<?php
+// NOTIFICACIÓN GLOBAL DE CAMBIOS DE RESERVAS
+function notificarCambioReserva(PDO $db, int $usuario_id, string $mensaje): void {
+    $stmt = $db->prepare("INSERT INTO transfer_notificaciones (id_usuario, mensaje) VALUES (?, ?)");
+    $stmt->execute([$usuario_id, $mensaje]);
+}
 class ReservaAdminController
 {
     public function index()
@@ -22,7 +28,6 @@ class ReservaAdminController
             ORDER BY r.fecha_entrada DESC
         ");
 
-        
         $reservas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $contenido = __DIR__ . '/../views/admin/reserva/index.php';
@@ -75,6 +80,8 @@ class ReservaAdminController
             $_POST['id_vehiculo']
         ]);
 
+        notificarCambioReserva($db, $_POST['id_cliente'], "Un administrador ha creado una nueva reserva para ti con localizador $localizador.");
+
         header("Location: ?r=reservaadmin/index");
         exit;
     }
@@ -119,6 +126,10 @@ class ReservaAdminController
             return;
         }
 
+        $stmt = $db->prepare("SELECT localizador FROM transfer_reservas WHERE id_reserva = ?");
+        $stmt->execute([$id]);
+        $reservaAnterior = $stmt->fetch(PDO::FETCH_ASSOC);
+
         $stmt = $db->prepare("UPDATE transfer_reservas SET 
             id_tipo_reserva = ?, id_cliente = ?, id_destino = ?, fecha_entrada = ?, hora_entrada = ?,
             numero_vuelo_entrada = ?, origen_vuelo_entrada = ?, fecha_vuelo_salida = ?, hora_vuelo_salida = ?,
@@ -140,6 +151,8 @@ class ReservaAdminController
             $id
         ]);
 
+        notificarCambioReserva($db, $_POST['id_cliente'], "Un administrador ha modificado tu reserva con localizador {$reservaAnterior['localizador']}.");
+
         header("Location: ?r=reservaadmin/index");
         exit;
     }
@@ -153,6 +166,14 @@ class ReservaAdminController
         if (!$id) {
             echo "ID no válido.";
             return;
+        }
+
+        $stmt = $db->prepare("SELECT id_cliente, localizador FROM transfer_reservas WHERE id_reserva = ?");
+        $stmt->execute([$id]);
+        $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($reserva) {
+            notificarCambioReserva($db, $reserva['id_cliente'], "Un administrador ha eliminado tu reserva con localizador {$reserva['localizador']}.");
         }
 
         $stmt = $db->prepare("DELETE FROM transfer_reservas WHERE id_reserva = ?");
