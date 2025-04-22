@@ -37,5 +37,31 @@
     }, '*');
   </script>
   <?php endif; ?>
+
 </body>
 </html>
+<?php if (isset($_SESSION['error_reserva'])): ?>
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    text: '<?= $_SESSION['error_reserva'] ?>',
+    confirmButtonColor: '#8e44ad'
+});
+</script>
+<?php unset($_SESSION['error_reserva']); endif; ?>
+
+<?php if (isset($_SESSION['success_reserva'])): ?>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: '¡Hecho!',
+    text: '<?= $_SESSION['success_reserva'] ?>',
+    confirmButtonColor: '#8e44ad',
+    timer: 2000,
+    showConfirmButton: false
+}).then(() => {
+    window.parent.postMessage('closeModal', '*');
+});
+</script>
+<?php unset($_SESSION['success_reserva']); endif; ?>

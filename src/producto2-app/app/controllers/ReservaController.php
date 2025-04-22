@@ -1,5 +1,5 @@
 <?php
-
+// ReservaController.php
 class ReservaController
 {
     public function index()
@@ -32,7 +32,6 @@ class ReservaController
         global $db;
 
         $reserva = [];
-
         $destinos = $db->query("SELECT id_zona, descripcion FROM transfer_zona")->fetchAll(PDO::FETCH_ASSOC);
         $vehiculos = $db->query("SELECT id_vehiculo, descripcion FROM transfer_vehiculo")->fetchAll(PDO::FETCH_ASSOC);
         $tipos = $db->query("SELECT id_tipo_reserva, descripcion FROM transfer_tipo_reserva")->fetchAll(PDO::FETCH_ASSOC);
@@ -44,76 +43,6 @@ class ReservaController
             include $contenido;
         } else {
             include __DIR__ . '/../views/layout.php';
-        }
-    }
-
-    public function edit()
-    {
-        require_once __DIR__ . '/../core/db.php';
-        global $db;
-
-        $id_reserva = $_GET['id'] ?? null;
-        $usuario_id = $_SESSION['usuario']['id'];
-
-        if (!$id_reserva) {
-            echo "ID no proporcionado";
-            return;
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $fecha = $_POST['fecha_entrada'];
-            $hora = $_POST['hora_entrada'];
-            $vuelo = $_POST['numero_vuelo_entrada'];
-            $origen = $_POST['origen_vuelo_entrada'];
-            $fecha_salida = $_POST['fecha_vuelo_salida'] ?? null;
-            $hora_salida = $_POST['hora_vuelo_salida'] ?? null;
-            $id_destino = $_POST['id_destino'];
-            $id_vehiculo = $_POST['id_vehiculo'];
-            $num_viajeros = $_POST['num_viajeros'];
-
-            $fechaHoraReserva = new DateTime($fecha . ' ' . $hora);
-            $ahora = new DateTime();
-
-            $interval = $ahora->diff($fechaHoraReserva);
-            if ($fechaHoraReserva <= $ahora || $interval->days < 2) {
-                echo "No puedes modificar reservas con menos de 48h de antelación.";
-                return;
-            }
-
-            $stmt = $db->prepare("UPDATE transfer_reservas 
-                SET fecha_entrada = ?, hora_entrada = ?, numero_vuelo_entrada = ?, origen_vuelo_entrada = ?, 
-                    fecha_vuelo_salida = ?, hora_vuelo_salida = ?, id_destino = ?, id_vehiculo = ?, num_viajeros = ?
-                WHERE id_reserva = ? AND id_cliente = ?");
-            $stmt->execute([
-                $fecha, $hora, $vuelo, $origen,
-                $fecha_salida, $hora_salida, $id_destino, $id_vehiculo, $num_viajeros,
-                $id_reserva, $usuario_id
-            ]);
-
-            echo "<script>window.parent.postMessage('closeModal', '*');</script>";
-            exit;
-        } else {
-            $stmt = $db->prepare("SELECT * FROM transfer_reservas WHERE id_reserva = ? AND id_cliente = ?");
-            $stmt->execute([$id_reserva, $usuario_id]);
-            $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$reserva) {
-                echo "Reserva no encontrada o no te pertenece.";
-                return;
-            }
-
-            $destinos = $db->query("SELECT id_zona, descripcion FROM transfer_zona")->fetchAll(PDO::FETCH_ASSOC);
-            $vehiculos = $db->query("SELECT id_vehiculo, descripcion FROM transfer_vehiculo")->fetchAll(PDO::FETCH_ASSOC);
-            $tipos = $db->query("SELECT id_tipo_reserva, descripcion FROM transfer_tipo_reserva")->fetchAll(PDO::FETCH_ASSOC);
-
-            $esModal = isset($_GET['modal']) && $_GET['modal'] == '1';
-            $contenido = __DIR__ . '/../views/reserva/edit.php';
-
-            if ($esModal) {
-                include $contenido;
-            } else {
-                include __DIR__ . '/../views/layout.php';
-            }
         }
     }
 
@@ -135,14 +64,15 @@ class ReservaController
         $num_viajeros = $_POST['num_viajeros'];
         $id_vehiculo = $_POST['id_vehiculo'];
 
-        $fecha_reserva = date('Y-m-d H:i:s');
-        $localizador = strtoupper(uniqid('LOC'));
-
         if (empty($fecha) || empty($hora) || empty($vuelo) || empty($origen) ||
             empty($tipo_reserva) || empty($destino) || empty($num_viajeros) || empty($id_vehiculo)) {
-            echo "Todos los campos son obligatorios.";
-            return;
+            $_SESSION['error_reserva'] = "Todos los campos son obligatorios.";
+            echo "<script>window.parent.location.reload();</script>";
+            exit;
         }
+
+        $fecha_reserva = date('Y-m-d H:i:s');
+        $localizador = strtoupper(uniqid('LOC'));
 
         $stmt = $db->prepare("INSERT INTO transfer_reservas (
             localizador, id_tipo_reserva, id_cliente, fecha_reserva, id_destino,
@@ -156,8 +86,80 @@ class ReservaController
             $fecha_salida, $hora_salida, $num_viajeros, $id_vehiculo
         ]);
 
-        echo "<script>window.parent.postMessage('closeModal', '*');</script>";
+        $_SESSION['success_reserva'] = "Reserva creada correctamente.";
+        echo "<script>window.parent.location.reload();</script>";
         exit;
+    }
+
+    public function edit()
+    {
+        require_once __DIR__ . '/../core/db.php';
+        global $db;
+
+        $id_reserva = $_GET['id'] ?? null;
+        $usuario_id = $_SESSION['usuario']['id'];
+
+        if (!$id_reserva) {
+            $_SESSION['error_reserva'] = "ID no proporcionado.";
+            echo "<script>window.parent.location.reload();</script>";
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $fecha = $_POST['fecha_entrada'];
+            $hora = $_POST['hora_entrada'];
+            $vuelo = $_POST['numero_vuelo_entrada'];
+            $origen = $_POST['origen_vuelo_entrada'];
+            $fecha_salida = $_POST['fecha_vuelo_salida'] ?? null;
+            $hora_salida = $_POST['hora_vuelo_salida'] ?? null;
+            $id_destino = $_POST['id_destino'];
+            $id_vehiculo = $_POST['id_vehiculo'];
+            $num_viajeros = $_POST['num_viajeros'];
+
+            $fechaHoraReserva = new DateTime($fecha . ' ' . $hora);
+            $ahora = new DateTime();
+            $interval = $ahora->diff($fechaHoraReserva);
+
+            if ($fechaHoraReserva <= $ahora || $interval->days < 2) {
+                $_SESSION['error_reserva'] = "No puedes modificar reservas con menos de 48h de antelación.";
+                echo "<script>window.parent.location.reload();</script>";
+                exit;
+            }
+
+            $stmt = $db->prepare("UPDATE transfer_reservas SET fecha_entrada=?, hora_entrada=?, numero_vuelo_entrada=?, origen_vuelo_entrada=?, fecha_vuelo_salida=?, hora_vuelo_salida=?, id_destino=?, id_vehiculo=?, num_viajeros=? WHERE id_reserva=? AND id_cliente=?");
+            $stmt->execute([
+                $fecha, $hora, $vuelo, $origen,
+                $fecha_salida, $hora_salida, $id_destino, $id_vehiculo, $num_viajeros,
+                $id_reserva, $usuario_id
+            ]);
+
+            $_SESSION['success_reserva'] = "Reserva modificada correctamente.";
+            echo "<script>window.parent.location.reload();</script>";
+            exit;
+        }
+
+        $stmt = $db->prepare("SELECT * FROM transfer_reservas WHERE id_reserva=? AND id_cliente=?");
+        $stmt->execute([$id_reserva, $usuario_id]);
+        $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$reserva) {
+            $_SESSION['error_reserva'] = "Reserva no encontrada o no te pertenece.";
+            echo "<script>window.parent.location.reload();</script>";
+            exit;
+        }
+
+        $destinos = $db->query("SELECT id_zona, descripcion FROM transfer_zona")->fetchAll(PDO::FETCH_ASSOC);
+        $vehiculos = $db->query("SELECT id_vehiculo, descripcion FROM transfer_vehiculo")->fetchAll(PDO::FETCH_ASSOC);
+        $tipos = $db->query("SELECT id_tipo_reserva, descripcion FROM transfer_tipo_reserva")->fetchAll(PDO::FETCH_ASSOC);
+
+        $esModal = isset($_GET['modal']) && $_GET['modal'] == '1';
+        $contenido = __DIR__ . '/../views/reserva/edit.php';
+
+        if ($esModal) {
+            include $contenido;
+        } else {
+            include __DIR__ . '/../views/layout.php';
+        }
     }
 
     public function delete()
@@ -165,42 +167,39 @@ class ReservaController
         require_once __DIR__ . '/../core/db.php';
         global $db;
 
-        if (!isset($_GET['id'])) {
-            echo "ID no proporcionado";
-            return;
-        }
-
-        $id_reserva = $_GET['id'];
+        $id_reserva = $_GET['id'] ?? null;
         $usuario_id = $_SESSION['usuario']['id'];
-        $tipo = $_SESSION['usuario']['tipo'];
 
-        if ($tipo === 'admin' || $tipo === 'hotel') {
-            $stmt = $db->prepare("DELETE FROM transfer_reservas WHERE id_reserva = ?");
-            $stmt->execute([$id_reserva]);
-        } else {
-            $stmt = $db->prepare("SELECT fecha_entrada, hora_entrada FROM transfer_reservas WHERE id_reserva = ? AND id_cliente = ?");
-            $stmt->execute([$id_reserva, $usuario_id]);
-            $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$reserva) {
-                echo "Reserva no encontrada o no te pertenece.";
-                return;
-            }
-
-            $fechaHoraReserva = new DateTime($reserva['fecha_entrada'] . ' ' . $reserva['hora_entrada']);
-            $ahora = new DateTime();
-            $interval = $ahora->diff($fechaHoraReserva);
-            $puedeEliminar = $fechaHoraReserva > $ahora && $interval->days >= 2;
-
-            if (!$puedeEliminar) {
-                echo "No puedes eliminar reservas con menos de 48h de antelación.";
-                return;
-            }
-
-            $stmt = $db->prepare("DELETE FROM transfer_reservas WHERE id_reserva = ?");
-            $stmt->execute([$id_reserva]);
+        if (!$id_reserva) {
+            $_SESSION['error_reserva'] = "ID no proporcionado.";
+            header("Location: ?r=reserva/index");
+            exit;
         }
 
+        $stmt = $db->prepare("SELECT fecha_entrada, hora_entrada FROM transfer_reservas WHERE id_reserva=? AND id_cliente=?");
+        $stmt->execute([$id_reserva, $usuario_id]);
+        $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$reserva) {
+            $_SESSION['error_reserva'] = "Reserva no encontrada o no te pertenece.";
+            header("Location: ?r=reserva/index");
+            exit;
+        }
+
+        $fechaHoraReserva = new DateTime($reserva['fecha_entrada'] . ' ' . $reserva['hora_entrada']);
+        $ahora = new DateTime();
+        $interval = $ahora->diff($fechaHoraReserva);
+
+        if ($fechaHoraReserva <= $ahora || $interval->days < 2) {
+            $_SESSION['error_reserva'] = "No puedes eliminar reservas con menos de 48h de antelación.";
+            header("Location: ?r=reserva/index");
+            exit;
+        }
+
+        $stmt = $db->prepare("DELETE FROM transfer_reservas WHERE id_reserva = ?");
+        $stmt->execute([$id_reserva]);
+
+        $_SESSION['success_reserva'] = "Reserva eliminada correctamente.";
         header("Location: ?r=reserva/index");
         exit;
     }

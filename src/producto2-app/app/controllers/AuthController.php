@@ -15,40 +15,39 @@ class AuthController
             $confirm = $_POST['confirm'];
             $type = $_POST['type'] ?? 'particular';
 
-            // Validaciones básicas
             if (empty($username) || empty($email) || empty($password) || empty($confirm)) {
-                echo "Todos los campos son obligatorios.";
-                return;
+                $_SESSION['error_register'] = "Todos los campos son obligatorios.";
+                header("Location: ?r=auth/register&type=$type");
+                exit;
             }
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                echo "Correo no válido.";
-                return;
+                $_SESSION['error_register'] = "Correo no válido.";
+                header("Location: ?r=auth/register&type=$type");
+                exit;
             }
 
             if ($password !== $confirm) {
-                echo "Las contraseñas no coinciden.";
-                return;
+                $_SESSION['error_register'] = "Las contraseñas no coinciden.";
+                header("Location: ?r=auth/register&type=$type");
+                exit;
             }
 
-            // Comprobar si ya existe ese email
             $stmt = $db->prepare("SELECT id FROM usuarios WHERE email = ?");
             $stmt->execute([$email]);
             if ($stmt->fetch()) {
-                echo "Este correo ya está registrado.";
-                return;
+                $_SESSION['error_register'] = "Este correo ya está registrado.";
+                header("Location: ?r=auth/register&type=$type");
+                exit;
             }
 
-            // Hash de contraseña
             $hashed = password_hash($password, PASSWORD_DEFAULT);
 
-            // Insertar en tabla usuarios
             $stmt = $db->prepare("INSERT INTO usuarios (username, email, password, tipo, creado_en) VALUES (?, ?, ?, ?, NOW())");
             $stmt->execute([$username, $email, $hashed, $type]);
 
             $usuario_id = $db->lastInsertId();
 
-            // Insertar según tipo
             switch ($type) {
                 case 'hotel':
                     $stmt = $db->prepare("INSERT INTO transfer_hotel (usuario, password, nombre, direccion) VALUES (?, ?, ?, '')");
@@ -60,21 +59,20 @@ class AuthController
                     $stmt->execute([$email, $hashed, $username]);
                     break;
 
-                    case 'particular':
-                        default:
-                            $stmt = $db->prepare("INSERT INTO transfer_viajeros (
-                                nombre, apellido1, apellido2, direccion, codigoPostal, ciudad, pais, email, password
-                            ) VALUES (?, '', '', '', '', '', '', ?, ?)");
-                            $stmt->execute([$username, $email, $hashed]);
-                            break;
-                        
+                case 'particular':
+                default:
+                    $stmt = $db->prepare("INSERT INTO transfer_viajeros (
+                        nombre, apellido1, apellido2, direccion, codigoPostal, ciudad, pais, email, password
+                    ) VALUES (?, '', '', '', '', '', '', ?, ?)");
+                    $stmt->execute([$username, $email, $hashed]);
+                    break;
             }
 
+            $_SESSION['success_register'] = "Registro exitoso. Ya puedes iniciar sesión.";
             header("Location: ?r=auth/login&type=$type");
             exit;
         }
 
-        // Si no es POST, mostrar formulario
         $contenido = __DIR__ . '/../views/auth/register.php';
         include __DIR__ . '/../views/layout.php';
     }
@@ -91,25 +89,28 @@ class AuthController
             $type = $_POST['type'] ?? 'particular';
 
             if (empty($email) || empty($password)) {
-                echo "Todos los campos son obligatorios.";
-                return;
+                $_SESSION['error_login'] = "Todos los campos son obligatorios.";
+                header("Location: ?r=auth/login&type=$type");
+                exit;
             }
 
-            // Buscar usuario
             $stmt = $db->prepare("SELECT * FROM usuarios WHERE email = ?");
             $stmt->execute([$email]);
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($usuario && password_verify($password, $usuario['password'])) {
-                // Guardar en sesión
-                $_SESSION['usuario'] = [
+                if ($usuario['tipo'] !== $type) {
+                    $_SESSION['error_login'] = "No tienes permisos para acceder con este tipo de usuario.";
+                    header("Location: ?r=auth/login&type=$type");
+                    exit;
+                }
+                            $_SESSION['usuario'] = [
                     'id' => $usuario['id'],
                     'username' => $usuario['username'],
                     'email' => $usuario['email'],
                     'tipo' => $usuario['tipo']
                 ];
 
-                // Redirección según tipo
                 session_write_close();
 
                 switch ($usuario['tipo']) {
@@ -124,20 +125,20 @@ class AuthController
                         break;
                     case 'particular':
                     default:
-                            header("Location: ?r=dashboardcliente/index");
-                            break;
-                    }
-                    exit;
-                } else {
-                    echo "Credenciales incorrectas.";
-                    return;
+                        header("Location: ?r=dashboardcliente/index");
+                        break;
                 }
+                exit;
             } else {
-                $contenido = __DIR__ . '/../views/auth/login.php';
-                include __DIR__ . '/../views/layout.php';
+                $_SESSION['error_login'] = "Credenciales incorrectas.";
+                header("Location: ?r=auth/login&type=$type");
+                exit;
             }
+        } else {
+            $contenido = __DIR__ . '/../views/auth/login.php';
+            include __DIR__ . '/../views/layout.php';
         }
-
+    }
 
     // LOGOUT
     public function logout()

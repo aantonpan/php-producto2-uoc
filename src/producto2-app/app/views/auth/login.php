@@ -80,3 +80,24 @@ $bg = ($type === 'admin') ? 'bg-dark' : 'bg-primary';
     </div>
 
 </div>
+<?php if (isset($_SESSION['error_login'])): ?>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '<?= $_SESSION['error_login'] ?>',
+        confirmButtonColor: '#8e44ad'
+    });
+</script>
+<?php unset($_SESSION['error_login']); endif; ?>
+
+<?php if (isset($_SESSION['success_register'])): ?>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: '¡Registro exitoso!',
+        text: '<?= $_SESSION['success_register'] ?>',
+        confirmButtonColor: '#8e44ad'
+    });
+</script>
+<?php unset($_SESSION['success_register']); endif; ?>

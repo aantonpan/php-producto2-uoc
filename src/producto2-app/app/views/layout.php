@@ -31,6 +31,10 @@ $isParticular = $isLoggedIn && $_SESSION['usuario']['tipo'] === 'particular';
     <!-- Tu CSS -->
     <link rel="stylesheet" href="/css/style.css">
 
+    <!-- Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     <style>
         body { overflow-x: hidden; }
         .sidebar {

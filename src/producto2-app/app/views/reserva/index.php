@@ -64,16 +64,17 @@
                           data-url="?r=reserva/edit&id=<?= $res['id_reserva'] ?>&modal=1">
                     <i class="bi bi-pencil-square"></i> Editar
                   </button>
-                  <a href="?r=reserva/delete&id=<?= $res['id_reserva'] ?>"
-                    class="btn btn-sm btn-danger rounded-pill"
-                    onclick="return confirm('¿Seguro que quieres cancelar esta reserva?')">
-                    <i class="bi bi-trash"></i> Borrar
-                  </a>
                 <?php else: ?>
                   <button class="btn btn-sm btn-outline-secondary rounded-pill" disabled>Editar</button>
-                  <button class="btn btn-sm btn-outline-secondary rounded-pill" disabled>Borrar</button>
                 <?php endif; ?>
+
+                <a href="#" class="btn btn-sm btn-danger rounded-pill"
+                  data-id="<?= $res['id_reserva'] ?>"
+                  data-eliminar>
+                  <i class="bi bi-trash"></i> Borrar
+                </a>
               </td>
+
             </tr>
           <?php endforeach; ?>
 
@@ -151,3 +152,50 @@
 
   }
 </script>
+
+<?php if (isset($_SESSION['success_reserva'])): ?>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: '¡Hecho!',
+    text: '<?= $_SESSION['success_reserva'] ?>',
+    confirmButtonColor: '#8e44ad'
+});
+</script>
+<?php unset($_SESSION['success_reserva']); endif; ?>
+
+<?php if (isset($_SESSION['error_reserva'])): ?>
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    text: '<?= $_SESSION['error_reserva'] ?>',
+    confirmButtonColor: '#8e44ad'
+});
+</script>
+<?php unset($_SESSION['error_reserva']); endif; ?>
+
+<script>
+document.querySelectorAll('[data-eliminar]').forEach(boton => {
+    boton.addEventListener('click', function (e) {
+        e.preventDefault();
+        const id = this.dataset.id;
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción eliminará la reserva definitivamente.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#c0392b',
+            cancelButtonColor: '#dcdcdc',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `?r=reserva/delete&id=${id}`;
+            }
+        });
+    });
+});
+</script>
+

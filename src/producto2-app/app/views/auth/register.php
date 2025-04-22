@@ -107,3 +107,13 @@ $bg = ($type === 'admin') ? 'bg-dark' : 'bg-primary';
     </div>
 
 </div>
+<?php if (isset($_SESSION['error_register'])): ?>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Error en el registro',
+        text: '<?= $_SESSION['error_register'] ?>',
+        confirmButtonColor: '#8e44ad'
+    });
+</script>
+<?php unset($_SESSION['error_register']); endif; ?>

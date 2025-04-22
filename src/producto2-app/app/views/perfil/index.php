@@ -5,12 +5,10 @@
     <i class="bi bi-person"></i> Mi Perfil
   </h2>
 
-  <?php if (!empty($perfil['email'])): ?>
+  <?php if (!empty($perfil)): ?>
     <div style="max-width: 960px;" class="mx-auto">
-
       <form method="POST" action="?r=perfil/edit" enctype="multipart/form-data" class="card shadow-sm border-0 p-4">
         <div class="row align-items-start g-4">
-
           <!-- Imagen de perfil -->
           <div class="col-md-3 text-center d-flex flex-column align-items-center">
             <img id="preview-perfil"
@@ -35,24 +33,26 @@
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Nombre</label>
                 <?= $editando
-                  ? '<input type="text" name="nombre" class="form-control" value="' . htmlspecialchars($perfil['nombre']) . '">'
+                  ? '<input type="text" name="nombre" class="form-control" value="' . htmlspecialchars($perfil['nombre']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['nombre']) . '</div>' ?>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Apellido 1</label>
                 <?= $editando
-                  ? '<input type="text" name="apellido1" class="form-control" value="' . htmlspecialchars($perfil['apellido1']) . '">'
+                  ? '<input type="text" name="apellido1" class="form-control" value="' . htmlspecialchars($perfil['apellido1']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['apellido1']) . '</div>' ?>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Apellido 2</label>
                 <?= $editando
-                  ? '<input type="text" name="apellido2" class="form-control" value="' . htmlspecialchars($perfil['apellido2']) . '">'
+                  ? '<input type="text" name="apellido2" class="form-control" value="' . htmlspecialchars($perfil['apellido2']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['apellido2']) . '</div>' ?>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Email</label>
-                <div class="form-control-plaintext text-muted"><?= htmlspecialchars($perfil['email']) ?></div>
+                <?= $editando
+                  ? '<input type="email" name="email" class="form-control" value="' . htmlspecialchars($_SESSION['usuario']['email']) . '">' 
+                  : '<div class="form-control-plaintext text-muted">' . htmlspecialchars($_SESSION['usuario']['email']) . '</div>' ?>
               </div>
             </div>
 
@@ -62,25 +62,25 @@
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Dirección</label>
                 <?= $editando
-                  ? '<input type="text" name="direccion" class="form-control" value="' . htmlspecialchars($perfil['direccion']) . '">'
+                  ? '<input type="text" name="direccion" class="form-control" value="' . htmlspecialchars($perfil['direccion']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['direccion']) . '</div>' ?>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Código Postal</label>
                 <?= $editando
-                  ? '<input type="text" name="codigoPostal" class="form-control" value="' . htmlspecialchars($perfil['codigoPostal']) . '">'
+                  ? '<input type="text" name="codigoPostal" class="form-control" value="' . htmlspecialchars($perfil['codigoPostal']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['codigoPostal']) . '</div>' ?>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">Ciudad</label>
                 <?= $editando
-                  ? '<input type="text" name="ciudad" class="form-control" value="' . htmlspecialchars($perfil['ciudad']) . '">'
+                  ? '<input type="text" name="ciudad" class="form-control" value="' . htmlspecialchars($perfil['ciudad']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['ciudad']) . '</div>' ?>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-muted text-uppercase small fw-semibold">País</label>
                 <?= $editando
-                  ? '<input type="text" name="pais" class="form-control" value="' . htmlspecialchars($perfil['pais']) . '">'
+                  ? '<input type="text" name="pais" class="form-control" value="' . htmlspecialchars($perfil['pais']) . '">' 
                   : '<div class="form-control-plaintext">' . htmlspecialchars($perfil['pais']) . '</div>' ?>
               </div>
             </div>
@@ -120,9 +120,9 @@
       <?php endif; ?>
     </div>
   <?php else: ?>
-    <p><strong>Usuario:</strong> <?= htmlspecialchars($perfil['username'] ?? '-') ?></p>
-    <p><strong>Email:</strong> <?= htmlspecialchars($perfil['email'] ?? '-') ?></p>
-    <p><strong>Tipo:</strong> <?= htmlspecialchars($perfil['tipo'] ?? '-') ?></p>
+    <p><strong>Usuario:</strong> <?= htmlspecialchars($_SESSION['usuario']['username'] ?? '-') ?></p>
+    <p><strong>Email:</strong> <?= htmlspecialchars($_SESSION['usuario']['email'] ?? '-') ?></p>
+    <p><strong>Tipo:</strong> <?= htmlspecialchars($_SESSION['usuario']['tipo'] ?? '-') ?></p>
   <?php endif; ?>
 
   <?php if ($editando): ?>
@@ -140,3 +140,25 @@
     </script>
   <?php endif; ?>
 </div>
+
+<?php if (isset($_SESSION['success_perfil'])): ?>
+<script>
+Swal.fire({
+  icon: 'success',
+  title: '¡Perfil actualizado!',
+  text: '<?= $_SESSION['success_perfil'] ?>',
+  confirmButtonColor: '#8e44ad'
+});
+</script>
+<?php unset($_SESSION['success_perfil']); endif; ?>
+
+<?php if (isset($_SESSION['error_perfil'])): ?>
+<script>
+Swal.fire({
+  icon: 'error',
+  title: 'Error',
+  text: '<?= $_SESSION['error_perfil'] ?>',
+  confirmButtonColor: '#8e44ad'
+});
+</script>
+<?php unset($_SESSION['error_perfil']); endif; ?>
