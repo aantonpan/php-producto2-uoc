@@ -85,5 +85,6 @@
   <div class="content">
     <?php include isset($contenido) ? $contenido : ''; ?>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

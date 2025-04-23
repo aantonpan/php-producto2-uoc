@@ -1,5 +1,5 @@
 <div class="container py-4">
-  <h2 class="mb-4 d-flex align-items-center gap-2"><i class="bi bi-geo-alt"></i> Crear Zona</h2>
+  <h2 class="mb-4 d-flex align-items-center gap-2 text-dark"><i class="bi bi-geo-alt"></i> Crear Zona</h2>
 
   <form method="POST" action="?r=zonaadmin/store">
     <div class="card p-4 shadow-sm border-0">

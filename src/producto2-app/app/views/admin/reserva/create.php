@@ -1,6 +1,6 @@
 <!-- views/admin/reserva/create.php -->
 <div class="container py-4">
-  <h2 class="mb-4"><i class="bi bi-calendar-plus"></i> Crear Reserva</h2>
+  <h2 class="mb-4 text-dark"><i class="bi bi-calendar-plus"></i> Crear Reserva</h2>
   <form method="POST" action="?r=reservaadmin/store">
     <div class="card p-4 shadow-sm border-0">
       <?php

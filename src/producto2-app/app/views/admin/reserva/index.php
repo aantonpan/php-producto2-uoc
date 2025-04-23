@@ -62,7 +62,7 @@
               <!-- Número de viajeros -->
               <td><?= htmlspecialchars($r['num_viajeros']) ?></td>
               <!-- Acciones, alineadas a la derecha -->
-              <td class="text-end">
+              <th class="text-end" style="width: 180px;">
                 <a href="?r=reservaadmin/edit&id=<?= $r['id_reserva'] ?>"
                    class="btn btn-sm btn-warning rounded-pill me-2">
                   <i class="bi bi-pencil"></i> Editar

@@ -77,7 +77,7 @@ if ($isParticular) {
             justify-content: flex-end;
             align-items: center;
             padding: 2rem;
-            padding-top: 3rem;
+            padding-top: 2rem;
         }
         .topbar .dropdown-toggle::after {
             display: none;

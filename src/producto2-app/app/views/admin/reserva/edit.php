@@ -1,6 +1,6 @@
 <!-- views/admin/reserva/edit.php -->
 <div class="container py-4">
-  <h2 class="mb-4">
+  <h2 class="mb-4 text-dark">
     <i class="bi bi-pencil-square"></i> Editar Reserva
     <?= isset($reserva['localizador']) ? ' - ' . $reserva['localizador'] : '' ?>
   </h2>

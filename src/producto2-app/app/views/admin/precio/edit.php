@@ -1,5 +1,5 @@
 <div class="container py-4">
-  <h2 class="mb-4"><i class="bi bi-pencil-square"></i> Editar Precio</h2>
+  <h2 class="mb-4 text-dark"><i class="bi bi-pencil-square"></i> Editar Precio</h2>
 
   <form method="POST" action="?r=precioadmin/update&id=<?= $precio['id_precios'] ?>">
     <div class="card p-4 shadow-sm border-0">

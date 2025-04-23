@@ -1,4 +1,5 @@
 <?php
+// HotelAdminController.php
 
 class HotelAdminController
 {
@@ -7,17 +8,18 @@ class HotelAdminController
         require_once __DIR__ . '/../core/db.php';
         global $db;
 
-        // Obtener hoteles con descripción de la zona
+        // Obtenemos hoteles con su zona
         $stmt = $db->query("
-            SELECT 
-                h.*, 
-                z.descripcion AS nombre_zona 
+            SELECT
+                h.*,
+                z.descripcion AS nombre_zona
             FROM transfer_hotel h
             LEFT JOIN transfer_zona z ON h.id_zona = z.id_zona
+            ORDER BY h.id_hotel DESC
         ");
-
         $hoteles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // Renderizamos la vista
         $contenido = __DIR__ . '/../views/admin/hotel/index.php';
         include __DIR__ . '/../views/admin/layout.php';
     }
@@ -27,9 +29,15 @@ class HotelAdminController
         require_once __DIR__ . '/../core/db.php';
         global $db;
 
-        $zonas = $db->query("SELECT * FROM transfer_zona")->fetchAll(PDO::FETCH_ASSOC);
+        // Sólo necesitamos las zonas para el selector
+        $zonas = $db
+            ->query("SELECT id_zona, descripcion FROM transfer_zona ORDER BY descripcion")
+            ->fetchAll(PDO::FETCH_ASSOC);
+
+        // Hotel vacío para el formulario
         $hotel = [];
 
+        // Renderizamos la vista
         $contenido = __DIR__ . '/../views/admin/hotel/create.php';
         include __DIR__ . '/../views/admin/layout.php';
     }
@@ -39,20 +47,33 @@ class HotelAdminController
         require_once __DIR__ . '/../core/db.php';
         global $db;
 
-        $stmt = $db->prepare("INSERT INTO transfer_hotel 
-            (id_zona, Comision, usuario, password, nombre, direccion) 
-            VALUES (?, ?, ?, ?, ?, ?)");
+        // Capturamos sólo los campos que importan
+        $id_zona   = trim($_POST['id_zona']   ?? '');
+        $comision  = trim($_POST['Comision']  ?? '');
+        $nombre    = trim($_POST['nombre']    ?? '');
+        $direccion = trim($_POST['direccion'] ?? '');
 
+        // Validación: todos obligatorios
+        if ($id_zona === '' || $comision === '' || $nombre === '' || $direccion === '') {
+            header("Location: ?r=hoteladmin/create&error=empty");
+            exit;
+        }
+
+        // Insertar
+        $stmt = $db->prepare("
+            INSERT INTO transfer_hotel
+              (id_zona, Comision, nombre, direccion)
+            VALUES (?, ?, ?, ?)
+        ");
         $stmt->execute([
-            $_POST['id_zona'],
-            $_POST['Comision'],
-            $_POST['usuario'],
-            $_POST['password'],
-            $_POST['nombre'],
-            $_POST['direccion']
+            $id_zona,
+            $comision,
+            $nombre,
+            $direccion
         ]);
 
-        header("Location: ?r=hoteladmin/index");
+        // Redirigir con alerta de éxito
+        header("Location: ?r=hoteladmin/index&success=created");
         exit;
     }
 
@@ -63,16 +84,25 @@ class HotelAdminController
 
         $id = $_GET['id'] ?? null;
         if (!$id) {
-            echo "ID no proporcionado.";
+            echo "ID no válido.";
             return;
         }
 
+        // Cargamos los datos del hotel
         $stmt = $db->prepare("SELECT * FROM transfer_hotel WHERE id_hotel = ?");
         $stmt->execute([$id]);
         $hotel = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$hotel) {
+            echo "Hotel no encontrado.";
+            return;
+        }
 
-        $zonas = $db->query("SELECT * FROM transfer_zona")->fetchAll(PDO::FETCH_ASSOC);
+        // Zonas para el selector
+        $zonas = $db
+            ->query("SELECT id_zona, descripcion FROM transfer_zona ORDER BY descripcion")
+            ->fetchAll(PDO::FETCH_ASSOC);
 
+        // Renderizamos la vista
         $contenido = __DIR__ . '/../views/admin/hotel/edit.php';
         include __DIR__ . '/../views/admin/layout.php';
     }
@@ -88,20 +118,27 @@ class HotelAdminController
             return;
         }
 
-        $id_zona = $_POST['id_zona'] ?? null;
-        $comision = $_POST['Comision'] ?? null;
-        $nombre = $_POST['nombre'] ?? null;
-        $direccion = $_POST['direccion'] ?? null;
+        // Capturamos los campos
+        $id_zona   = trim($_POST['id_zona']   ?? '');
+        $comision  = trim($_POST['Comision']  ?? '');
+        $nombre    = trim($_POST['nombre']    ?? '');
+        $direccion = trim($_POST['direccion'] ?? '');
 
-        if (!$id_zona || !$comision || !$nombre || !$direccion) {
-            echo "Todos los campos son obligatorios.";
-            return;
+        // Validación
+        if ($id_zona === '' || $comision === '' || $nombre === '' || $direccion === '') {
+            header("Location: ?r=hoteladmin/edit&id={$id}&error=empty");
+            exit;
         }
 
-        $stmt = $db->prepare("UPDATE transfer_hotel SET 
-            id_zona = ?, Comision = ?, nombre = ?, direccion = ?
-            WHERE id_hotel = ?");
-
+        // Actualizar
+        $stmt = $db->prepare("
+            UPDATE transfer_hotel SET
+              id_zona   = ?,
+              Comision  = ?,
+              nombre    = ?,
+              direccion = ?
+            WHERE id_hotel = ?
+        ");
         $stmt->execute([
             $id_zona,
             $comision,
@@ -110,10 +147,10 @@ class HotelAdminController
             $id
         ]);
 
-        header("Location: ?r=hoteladmin/index");
+        // Redirigir con alerta de éxito
+        header("Location: ?r=hoteladmin/index&success=updated");
         exit;
     }
-
 
     public function delete()
     {
@@ -121,15 +158,14 @@ class HotelAdminController
         global $db;
 
         $id = $_GET['id'] ?? null;
-        if (!$id) {
-            echo "ID no válido.";
-            return;
+        if ($id) {
+            $stmt = $db->prepare("DELETE FROM transfer_hotel WHERE id_hotel = ?");
+            $stmt->execute([$id]);
         }
 
-        $stmt = $db->prepare("DELETE FROM transfer_hotel WHERE id_hotel = ?");
-        $stmt->execute([$id]);
-
-        header("Location: ?r=hoteladmin/index");
+        // Alerta de eliminación
+        header("Location: ?r=hoteladmin/index&success=deleted");
         exit;
     }
 }
+?>

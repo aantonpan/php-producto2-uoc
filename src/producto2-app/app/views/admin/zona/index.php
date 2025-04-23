@@ -4,15 +4,15 @@
     <h2 class="d-flex align-items-center gap-2 mb-0 text-dark">
       <i class="bi bi-geo-alt"></i>Zonas</h2>
     </h2>
-    <a href="?r=reservaadmin/create" class="btn btn-success rounded-pill px-4">
+    <a href="?r=zonaadmin/create" class="btn btn-success rounded-pill px-4">
     <i class="bi bi-plus-circle"></i> Nueva zona
     </a>
   </div>
 
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <thead class="table-light">
-        <tr><th>ID</th><th>Descripción</th><th></th></tr>
+  <div class="table-responsive shadow-sm rounded">
+  <table class="table table-hover align-middle">
+  <thead class="table-light text-uppercase small text-muted">
+  <tr><th>ID</th><th>Descripción</th><th class="text-end">Acciones</th></tr>
       </thead>
       <tbody>
         <?php foreach ($zonas as $z): ?>

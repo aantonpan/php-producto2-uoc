@@ -1,13 +1,9 @@
-<?php // index.php de reservas ?>
-
 <div class="container py-4">
-  <!-- Encabezado -->
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h2 class="mb-4 d-flex align-items-center gap-2">
-        <i class="bi bi-journal-check"></i> Mis Reservas
-      </h2>
-    </div>
+    <h2 class="d-flex align-items-center gap-2 mb-0">
+      <i class="bi bi-journal-check"></i> Reservas
+    </h2>
+    
     <button class="btn btn-primary rounded-pill px-4"
             data-bs-toggle="modal"
             data-bs-target="#formModal"
@@ -56,7 +52,7 @@
               <td><?= $res['nombre_destino'] ?></td>
               <td><?= $res['num_viajeros'] ?></td>
               <td><?= isset($res['Precio']) ? $res['Precio'] . ' €' : 'N/D' ?></td>
-              <td class="text-end">
+              <th class="text-end" style="width: 180px;">
                 <?php if ($puedeEditar): ?>
                   <button class="btn btn-sm btn-warning rounded-pill"
                           data-bs-toggle="modal"

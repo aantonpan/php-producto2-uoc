@@ -59,13 +59,23 @@ class AuthController
                     $stmt->execute([$email, $hashed, $username]);
                     break;
 
-                case 'particular':
-                default:
-                    $stmt = $db->prepare("INSERT INTO transfer_viajeros (
-                        nombre, apellido1, apellido2, direccion, codigoPostal, ciudad, pais, email, password
-                    ) VALUES (?, '', '', '', '', '', '', ?, ?)");
-                    $stmt->execute([$username, $email, $hashed]);
-                    break;
+                    case 'particular':
+                        default:
+                            // Sólo grabamos el nombre + la contraseña (necesaria en el esquema) 
+                            // y enlazamos vía id_usuario; el resto de campos quedan en cadena vacía
+                            $stmt = $db->prepare("
+                                INSERT INTO transfer_viajeros (
+                                    nombre, apellido1, apellido2,
+                                    direccion, codigoPostal, ciudad, pais,
+                                    password, id_usuario
+                                ) VALUES (?, '', '', '', '', '', '', ?, ?)
+                            ");
+                            $stmt->execute([
+                                $username,     // nombre
+                                $hashed,       // password (obligatorio en tu tabla)
+                                $usuario_id    // FK hacia usuarios.id
+                            ]);
+                            break;
             }
 
             $_SESSION['success_register'] = "Registro exitoso. Ya puedes iniciar sesión.";
