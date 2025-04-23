@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mysql_producto2
--- Tiempo de generación: 21-04-2025 a las 01:20:57
+-- Tiempo de generación: 23-04-2025 a las 00:42:28
 -- Versión del servidor: 8.0.41
 -- Versión de PHP: 8.2.8
 
@@ -32,7 +32,7 @@ CREATE TABLE `transfer_hotel` (
   `id_zona` int DEFAULT NULL,
   `Comision` int DEFAULT NULL,
   `usuario` int DEFAULT NULL,
-  `password` varchar(100) NOT NULL,
+  `password` varchar(100) DEFAULT NULL,
   `nombre` varchar(100) NOT NULL,
   `direccion` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -46,7 +46,49 @@ INSERT INTO `transfer_hotel` (`id_hotel`, `id_zona`, `Comision`, `usuario`, `pas
 (2, 2, 12, 102, 'pass456', 'Resort Sol y Mar', 'Calle Atlántico 45'),
 (3, 3, 15, 103, 'pass789', 'Playa Blanca Suites', 'Paseo Costa 19'),
 (4, 4, 8, 104, 'pass321', 'Maspalomas Palace', 'Av. de los Palmerales 21'),
-(5, 5, 9, 105, 'pass654', 'Bahía Azul', 'Calle del Mar 14');
+(5, 5, 10, 105, 'pass654', 'Bahía Azul', 'Calle del Mar 14'),
+(9, 4, 8, NULL, NULL, 'Bahía Roja', 'C/Dipustació 34');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `transfer_notificaciones`
+--
+
+CREATE TABLE `transfer_notificaciones` (
+  `id` int NOT NULL,
+  `id_usuario` int NOT NULL,
+  `mensaje` text NOT NULL,
+  `leido` tinyint(1) DEFAULT '0',
+  `creada_en` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `transfer_notificaciones`
+--
+
+INSERT INTO `transfer_notificaciones` (`id`, `id_usuario`, `mensaje`, `leido`, `creada_en`) VALUES
+(1, 11, 'Un administrador ha eliminado tu reserva con localizador LOC6807DDB5A67E0.', 1, '2025-04-22 18:51:09'),
+(2, 11, 'Un administrador ha modificado tu reserva con localizador LOC6807BC5A6532A.', 1, '2025-04-22 20:10:21'),
+(3, 11, 'Un administrador ha eliminado tu reserva con localizador LOC6807BC5A6532A.', 1, '2025-04-22 20:18:11'),
+(5, 11, 'Un administrador ha modificado tu reserva con localizador LOC6807FA60609CF.', 1, '2025-04-22 20:22:17'),
+(6, 11, 'Un administrador ha modificado tu reserva con localizador LOC6807FA60609CF.', 1, '2025-04-22 20:47:46'),
+(7, 6, 'Un administrador ha creado una nueva reserva para ti con localizador LOC680806B58CD76.', 0, '2025-04-22 21:14:29'),
+(8, 11, 'Un administrador ha modificado tu reserva con localizador LOC6807FA60609CF.', 1, '2025-04-22 21:23:16'),
+(9, 11, 'Un administrador ha creado una nueva reserva para ti con localizador LOC68080FADD3BAA.', 1, '2025-04-22 21:52:45'),
+(10, 11, 'Un administrador ha modificado tu reserva con localizador LOC68080FADD3BAA.', 1, '2025-04-22 22:20:04'),
+(11, 11, 'Un administrador ha modificado tu reserva con localizador LOC680806B58CD76.', 1, '2025-04-22 22:23:30'),
+(12, 6, 'Un administrador ha modificado tu reserva con localizador LOC6805839C10DE0.', 0, '2025-04-22 22:23:45'),
+(13, 11, 'Un administrador ha modificado tu reserva con localizador LOC6807FA60609CF.', 1, '2025-04-22 22:23:55'),
+(14, 11, 'Un administrador ha modificado tu reserva con localizador LOC680804806CBF1.', 1, '2025-04-22 22:24:05'),
+(15, 11, 'Un administrador ha modificado tu reserva con localizador LOC680806B58CD76.', 1, '2025-04-22 22:24:14'),
+(16, 11, 'Un administrador ha modificado tu reserva con localizador LOC680806B58CD76.', 1, '2025-04-22 22:24:55'),
+(17, 11, 'Un administrador ha modificado tu reserva con localizador LOC6805839C10DE0.', 1, '2025-04-22 22:25:11'),
+(18, 11, 'Un administrador ha modificado tu reserva con localizador LOC680806B58CD76.', 1, '2025-04-23 00:15:44'),
+(19, 11, 'Un administrador ha eliminado tu reserva con localizador LOC6805839C10DE0.', 1, '2025-04-23 00:15:48'),
+(20, 11, 'Un administrador ha modificado tu reserva con localizador LOC6807FA60609CF.', 1, '2025-04-23 00:15:53'),
+(21, 11, 'Un administrador ha creado una nueva reserva para ti con localizador LOC680831589D0B8.', 1, '2025-04-23 00:16:24'),
+(22, 11, 'Un administrador ha modificado tu reserva con localizador LOC680806B58CD76.', 0, '2025-04-23 00:40:15');
 
 -- --------------------------------------------------------
 
@@ -90,7 +132,8 @@ INSERT INTO `transfer_precios` (`id_precios`, `id_vehiculo`, `id_hotel`, `Precio
 (55, 5, 2, 26),
 (56, 5, 3, 32),
 (57, 5, 4, 32),
-(58, 5, 5, 40);
+(58, 5, 5, 40),
+(59, 5, 9, 45);
 
 -- --------------------------------------------------------
 
@@ -122,8 +165,12 @@ CREATE TABLE `transfer_reservas` (
 --
 
 INSERT INTO `transfer_reservas` (`id_reserva`, `localizador`, `id_hotel`, `id_tipo_reserva`, `id_cliente`, `fecha_reserva`, `fecha_modificacion`, `id_destino`, `fecha_entrada`, `hora_entrada`, `numero_vuelo_entrada`, `origen_vuelo_entrada`, `hora_vuelo_salida`, `fecha_vuelo_salida`, `num_viajeros`, `id_vehiculo`) VALUES
-(21, 'LOC68058025620C6', NULL, 1, 5, '2025-04-20 23:15:49', NULL, 2, '2025-04-22', '01:17:00', 'A3455', 'Maldivas', '01:18:00', '2025-04-24', 7, 1),
-(23, 'LOC6805839C10DE0', NULL, 1, 6, '2025-04-20 23:30:36', NULL, 1, '2025-05-02', '01:32:00', 'A3788', 'Madrid', '01:32:00', '2025-05-17', 6, 5);
+(28, 'LOC6807FA60609CF', 4, 5, 11, '2025-04-22 20:21:52', '2025-04-23', 5, '2025-04-25', '22:23:00', 'A3788', 'Maldivas', '22:23:00', '2025-04-27', 7, 4),
+(29, 'LOC680804806CBF1', 1, 2, 11, '2025-04-22 21:05:04', '2025-04-22', 3, '2025-04-23', '23:08:00', 'A3788', 'Barcelona', '23:08:00', '2025-04-25', 8, 1),
+(30, 'LOC680806B58CD76', 9, 1, 11, '2025-04-22 21:14:29', '2025-04-23', 1, '2025-05-09', '23:17:00', 'A3455', 'Illes Balears', '23:16:00', '2025-05-11', 8, 1),
+(31, 'LOC68080FADD3BAA', 5, 4, 11, '2025-04-22 21:52:45', '2025-04-22', 5, '2025-05-02', '23:55:00', 'A3788', 'Madrid', '23:54:00', '2025-05-17', 4, 3),
+(33, 'LOC68083022F1C83', NULL, 2, 15, '2025-04-23 00:11:14', NULL, 1, '2025-04-24', '02:12:00', 'A3445', 'Madrid', '02:16:00', '2025-04-27', 6, 1),
+(34, 'LOC680831589D0B8', 5, 1, 11, '2025-04-23 00:16:24', NULL, 2, '2025-04-24', '02:19:00', 'A3445', 'Barcelona', '02:21:00', '2025-05-03', 7, 2);
 
 -- --------------------------------------------------------
 
@@ -185,17 +232,17 @@ CREATE TABLE `transfer_viajeros` (
   `codigoPostal` varchar(100) NOT NULL,
   `ciudad` varchar(100) NOT NULL,
   `pais` varchar(100) NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(100) NOT NULL,
-  `imagen_perfil` varchar(255) DEFAULT NULL
+  `imagen_perfil` varchar(255) DEFAULT NULL,
+  `id_usuario` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Volcado de datos para la tabla `transfer_viajeros`
 --
 
-INSERT INTO `transfer_viajeros` (`id_viajero`, `nombre`, `apellido1`, `apellido2`, `direccion`, `codigoPostal`, `ciudad`, `pais`, `email`, `password`, `imagen_perfil`) VALUES
-(7, 'Manola', 'García', 'López', 'Carrer de Diputació 123', '08036', 'Barcelona', 'Espanya', 'usuario1@mail.com', '$2y$10$xUQDLHv6Wjgl8R3dDIupqO6JKH0iz50M9rg.DtHTSsePTdBo1/ViK', 'uploads/perfil_68059d179a47c_curry.png');
+INSERT INTO `transfer_viajeros` (`id_viajero`, `nombre`, `apellido1`, `apellido2`, `direccion`, `codigoPostal`, `ciudad`, `pais`, `password`, `imagen_perfil`, `id_usuario`) VALUES
+(8, 'Manola', 'García ', 'López', 'C/ Diputació', '08036', 'Barcelona', 'Espanya', '$2y$10$YvRM.bssYiseH5OOxViVLuynweplVGPjd8C5nvEA22UYVhfpYXqVi', 'uploads/perfil_680806ee285c7_terry.png', 11);
 
 -- --------------------------------------------------------
 
@@ -239,8 +286,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `username`, `email`, `password`, `tipo`, `creado_en`) VALUES
-(6, 'admin', 'admin@mail.com', '$2y$10$IvMUXpddJ0IQ4G5DdknfJeWBIbKlW07SAheyl8kLNZpMG4W2tNhHu', 'admin', '2025-04-18 21:01:11'),
-(10, 'usuario1', 'usuario1@mail.com', '$2y$10$9buDkU7UdJYOaQ82S3mV3.slEglblggkAD9t//eoCvXSaFbQkeyeG', 'particular', '2025-04-21 00:04:13');
+(6, 'admin', 'admin1@mail.com', '$2y$10$/UcvQPfl38M.jAbhk3dlkuobx.5bVnLIlZzcy2xckzCNH65zmdfkq', 'admin', '2025-04-18 21:01:11'),
+(11, 'usuario1@mail.com', 'usuario1@mail.com', '$2y$10$P5bcKoUh0smcAg1HvzGOw.1s9mEYA00Gze24KPGTR2nhKVYOg/STW', 'particular', '2025-04-22 15:22:58');
 
 --
 -- Índices para tablas volcadas
@@ -252,6 +299,13 @@ INSERT INTO `usuarios` (`id`, `username`, `email`, `password`, `tipo`, `creado_e
 ALTER TABLE `transfer_hotel`
   ADD PRIMARY KEY (`id_hotel`),
   ADD KEY `FK_HOTEL_ZONA` (`id_zona`);
+
+--
+-- Indices de la tabla `transfer_notificaciones`
+--
+ALTER TABLE `transfer_notificaciones`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_usuario` (`id_usuario`);
 
 --
 -- Indices de la tabla `transfer_precios`
@@ -288,7 +342,7 @@ ALTER TABLE `transfer_vehiculo`
 --
 ALTER TABLE `transfer_viajeros`
   ADD PRIMARY KEY (`id_viajero`),
-  ADD KEY `fk_viajeros_email` (`email`);
+  ADD KEY `fk_viajeros_usuario` (`id_usuario`);
 
 --
 -- Indices de la tabla `transfer_zona`
@@ -311,49 +365,55 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `transfer_hotel`
 --
 ALTER TABLE `transfer_hotel`
-  MODIFY `id_hotel` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_hotel` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `transfer_notificaciones`
+--
+ALTER TABLE `transfer_notificaciones`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `transfer_precios`
 --
 ALTER TABLE `transfer_precios`
-  MODIFY `id_precios` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id_precios` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT de la tabla `transfer_reservas`
 --
 ALTER TABLE `transfer_reservas`
-  MODIFY `id_reserva` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_reserva` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `transfer_tipo_reserva`
 --
 ALTER TABLE `transfer_tipo_reserva`
-  MODIFY `id_tipo_reserva` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_tipo_reserva` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `transfer_vehiculo`
 --
 ALTER TABLE `transfer_vehiculo`
-  MODIFY `id_vehiculo` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_vehiculo` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `transfer_viajeros`
 --
 ALTER TABLE `transfer_viajeros`
-  MODIFY `id_viajero` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_viajero` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `transfer_zona`
 --
 ALTER TABLE `transfer_zona`
-  MODIFY `id_zona` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_zona` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Restricciones para tablas volcadas
@@ -364,6 +424,12 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `transfer_hotel`
   ADD CONSTRAINT `FK_HOTEL_ZONA` FOREIGN KEY (`id_zona`) REFERENCES `transfer_zona` (`id_zona`);
+
+--
+-- Filtros para la tabla `transfer_notificaciones`
+--
+ALTER TABLE `transfer_notificaciones`
+  ADD CONSTRAINT `transfer_notificaciones_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `transfer_precios`
@@ -385,7 +451,7 @@ ALTER TABLE `transfer_reservas`
 -- Filtros para la tabla `transfer_viajeros`
 --
 ALTER TABLE `transfer_viajeros`
-  ADD CONSTRAINT `fk_viajeros_email` FOREIGN KEY (`email`) REFERENCES `usuarios` (`email`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_viajeros_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
