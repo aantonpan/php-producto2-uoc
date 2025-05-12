@@ -154,4 +154,10 @@ class ReservaController extends Controller
 
         return redirect()->route('reserva.index')->with('success', 'Reserva eliminada correctamente.');
     }
+
+    //REST WebService procedimiento que devuelva un JSON con información agregada de las reservas realizadas a distintas zonas de la isla
+
+    public function listaReservas() {
+        
+    }
 }
