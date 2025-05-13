@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 <div class="container py-4">
     <h2 class="mb-4 d-flex align-items-center gap-2 text-dark">
         <i class="bi bi-speedometer2"></i> Bienvenido/a al Panel de Administración

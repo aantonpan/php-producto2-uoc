@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 @php
     $editando = request()->query('edit') === '1';
     $usuario = session('usuario');

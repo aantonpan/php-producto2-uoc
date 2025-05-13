@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 <div class="row g-3">
     <!-- Fecha y hora de entrada -->
     <div class="col-md-6">

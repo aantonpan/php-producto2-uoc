@@ -19,9 +19,6 @@ use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\ZonaAdminController;
 use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 

@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 <style>
     .cards-overlay {
         position: absolute;

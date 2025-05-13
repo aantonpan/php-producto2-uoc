@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <div class="container py-4">
     <h2 class="mb-4 d-flex align-items-center gap-2">
         <i class="bi bi-calendar-event"></i> Mi Calendario
@@ -15,19 +18,16 @@
     </div>
 </div>
 
-<!-- Modal estilizado -->
+<!-- Modal detalle reserva -->
 <div class="modal fade" id="reservaModal" tabindex="-1" aria-labelledby="reservaModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow-sm rounded-4">
-            <!-- CABECERA -->
             <div class="modal-header bg-primary text-white rounded-top-4">
                 <h5 class="modal-title d-flex align-items-center gap-2">
                     <i class="bi bi-journal-check"></i> Detalle de la Reserva
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
-
-            <!-- CUERPO -->
             <div class="modal-body p-4">
                 <div class="row g-3">
                     @foreach([
@@ -55,10 +55,14 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
+
+<!-- Datos eventos seguros -->
+<script type="application/json" id="eventos-data">
+    {!! json_encode($eventos) !!}
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -68,6 +72,8 @@
             return;
         }
 
+        const eventos = JSON.parse(document.getElementById('eventos-data').textContent);
+
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             locale: 'es',
@@ -76,7 +82,7 @@
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,listWeek'
             },
-            events: @json($eventos ?? []),
+            events: eventos,
             eventDidMount: function(info){
                 info.el.style.cursor = 'pointer';
             },
@@ -104,3 +110,4 @@
         calendar.render();
     });
 </script>
+@endsection
