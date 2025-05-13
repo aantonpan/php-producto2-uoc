@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layout')
 
 <div class="row g-3">
     <!-- Fecha y hora de entrada -->

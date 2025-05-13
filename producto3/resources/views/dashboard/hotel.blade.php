@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layout')
 
 <div class="container py-4">
     <h2 class="mb-4">Bienvenido, {{ session('usuario.username') }}</h2>

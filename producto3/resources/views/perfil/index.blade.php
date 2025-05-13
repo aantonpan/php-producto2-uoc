@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layout')
 
 @php
     $editando = request()->query('edit') === '1';
