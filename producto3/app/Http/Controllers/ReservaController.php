@@ -157,7 +157,24 @@ class ReservaController extends Controller
 
     //REST WebService procedimiento que devuelva un JSON con información agregada de las reservas realizadas a distintas zonas de la isla
 
-    public function listaReservas() {
-        
+    public function listaReservas()
+{
+    // Total de reservas
+    $totalReservas = DB::table('transfer_reservas')
+        ->count();
+
+    // Agrupado por zona
+    $reservasPorZona = DB::table('transfer_reservas')
+        ->join('transfer_hotel', 'transfer_reservas.id_hotel', '=', 'transfer_hotel.id_hotel')
+        ->join('transfer_zona', 'transfer_hotel.id_zona', '=', 'transfer_zona.id_zona')
+        ->select(
+            'transfer_zona.descripcion as zona',
+            DB::raw('COUNT(transfer_reservas.id_reserva) as reservas'),
+            DB::raw('ROUND(COUNT(transfer_reservas.id_reserva) / ' . $totalReservas . ' * 100, 2) as porcentaje')
+        )
+        ->groupBy('transfer_zona.id_zona')
+        ->get();
+
+    return response()->json($reservasPorZona);
     }
 }
