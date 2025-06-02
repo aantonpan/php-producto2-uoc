@@ -1,4 +1,0 @@
-@extends('layout')
-
-<h2>zona()</h2>
-<p>Vista de prueba para zona.</p>
